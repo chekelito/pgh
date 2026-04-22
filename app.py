@@ -241,7 +241,7 @@ elif st.session_state.pantalla == "compra":
     **2️⃣ Envía el comprobante**
     - 📲 WhatsApp: +56 9 5222 2772
 
-    **3️⃣ Recibe tu código en menos de 24 horas**
+    **3️⃣ Recibe tu código en minutos**
     """)
 
     st.markdown("---")
