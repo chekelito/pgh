@@ -234,12 +234,12 @@ elif st.session_state.pantalla == "compra":
     ### 3 pasos simples:
 
     **1️⃣ Transfiere $2.990**
-    - Banco: *(tu banco)*
-    - RUT: *(tu RUT)*
-    - Nombre: *(tu nombre)*
+    - Banco: BancoEstado (Cuenta RUT)
+    - RUT: 21.553.061-2
+    - Nombre: Exequiel Zambrano
 
     **2️⃣ Envía el comprobante**
-    - 📲 WhatsApp: *(tu número)*
+    - 📲 WhatsApp: +56 9 5222 2772
 
     **3️⃣ Recibe tu código en menos de 24 horas**
     """)
