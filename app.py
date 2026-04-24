@@ -224,11 +224,12 @@ hr {{ border-color: rgba(28,163,158,0.15) !important; }}
   font-weight: 600;
 }}
 .metric-value {{
-  font-family: 'Syne', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: {C_TEXT};
-  line-height: 1.2;
+  line-height: 1.3;
+  letter-spacing: 0px;
 }}
 .blurred {{ filter: blur(5px); user-select: none; pointer-events: none; }}
 
@@ -250,13 +251,11 @@ hr {{ border-color: rgba(28,163,158,0.15) !important; }}
   font-weight: 600;
 }}
 .pgh-result-value {{
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2rem, 6vw, 2.8rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #fff, {C_ACCENT2});
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: -1px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  font-weight: 700;
+  color: {C_ACCENT2};
+  letter-spacing: 0px;
   line-height: 1.1;
 }}
 .pgh-result-sub {{
