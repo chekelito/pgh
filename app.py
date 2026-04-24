@@ -555,7 +555,7 @@ with c1:
     <div style="width:42px;height:42px;background:linear-gradient(135deg,{C_SURFACE},{C_MID});border:1px solid rgba(28,163,158,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">📈</div>
     <div>
       <div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1});-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2">PGH</div>
-      <div style="font-size:0.55rem;color:{C_MUTED};letter-spacing:1.5px;text-transform:uppercase;margin-top:1px">Gestión de Honorarios</div>
+      <div style="font-size:0.55rem;color:{C_MUTED};letter-spacing:1.5px;text-transform:uppercase;margin-top:1px">Plataforma de Gestión de Honorarios</div>
     </div></div>""", unsafe_allow_html=True)
 with c3:
     if st.session_state.es_pro:
