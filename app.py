@@ -786,12 +786,34 @@ elif st.session_state.pantalla == "pro":
         df = pd.DataFrame(boletas)
 
         # Tabla mobile-friendly: solo columnas esenciales
-        dm = df[["fecha","liquido","bruto","balance_renta"]].copy()
-        dm.columns = ["Fecha","Líquido","Bruto","Balance"]
-        dm["Líquido"] = dm["Líquido"].apply(clp)
-        dm["Bruto"] = dm["Bruto"].apply(clp)
-        dm["Balance"] = dm["Balance"].apply(lambda x: f"{'🟢' if x>=0 else '🔴'} {clp(x)}")
-        st.dataframe(dm, hide_index=True, use_container_width=True)
+        filas = ""
+        for _, row in df.iterrows():
+            bal = row["balance_renta"]
+            color = "#00C853" if bal >= 0 else "#FF4B4B"
+            icono = "🟢" if bal >= 0 else "🔴"
+            filas += f"""<tr>
+                <td>{row['fecha']}</td>
+                <td>{clp(row['liquido'])}</td>
+                <td>{clp(row['bruto'])}</td>
+                <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
+            </tr>"""
+        st.markdown(f"""
+        <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
+        <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
+            <thead>
+                <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
+                    <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
+                </tr>
+            </thead>
+            <tbody style="color:#FFFFFF">
+                {filas}
+            </tbody>
+        </table>
+        </div>
+        """, unsafe_allow_html=True)
 
         # Botón reporte anual
         st.markdown("<br>", unsafe_allow_html=True)
