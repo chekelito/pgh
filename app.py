@@ -549,7 +549,7 @@ for k, v in defs.items():
 valor_uf = obtener_uf()
 
 # ── HEADER ────────────────────────────────────────────────────────────────────
-c1, c2, c3 = st.columns([3, 2, 1])
+c1, c3 = st.columns([4, 1])
 with c1:
     st.markdown(f"""<div style="display:flex;align-items:center;gap:12px;padding:4px 0">
     <div style="width:42px;height:42px;background:linear-gradient(135deg,{C_SURFACE},{C_MID});border:1px solid rgba(28,163,158,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">📈</div>
@@ -557,8 +557,6 @@ with c1:
       <div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1});-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2">PGH</div>
       <div style="font-size:0.55rem;color:{C_MUTED};letter-spacing:1.5px;text-transform:uppercase;margin-top:1px">Gestión de Honorarios</div>
     </div></div>""", unsafe_allow_html=True)
-with c2:
-    st.markdown(f'<div style="padding-top:10px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
 with c3:
     if st.session_state.es_pro:
         if st.button("Salir", use_container_width=True):
@@ -569,6 +567,8 @@ with c3:
         if st.button("Ingresar", use_container_width=True):
             st.session_state.pantalla = "login_directo"
             st.rerun()
+
+st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
 
 st.divider()
 
@@ -858,12 +858,12 @@ elif st.session_state.pantalla == "pro":
             font=dict(color=C_MUTED, family="DM Sans", size=12),
             xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=12), title=""),
             yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11),
-                       tickprefix="$", tickformat=",.0f", title=""),
+                       tickprefix="$", tickformat=",.0f", title="", rangemode="nonnegative"),
             margin=dict(t=50, b=50, l=70, r=20),
             height=340,
             bargap=0.3,
         )
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
 
         # Gráfico 2: Línea balance acumulado
         ds = df.sort_values("fecha").copy()
@@ -913,7 +913,7 @@ elif st.session_state.pantalla == "pro":
                      font=dict(color=C_DANGER, size=11), xanchor="left"),
             ] if max_bal > 0 and min_bal < 0 else [],
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
     else:
         st.info("Aún no tienes boletas guardadas. Calcula y guarda tu primera boleta arriba. 👆")
