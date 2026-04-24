@@ -433,8 +433,9 @@ def pdf_desglose(r, nombre, valor_uf):
     lt.setStyle(TableStyle([("VALIGN",(0,0),(-1,-1),"MIDDLE"),("BOTTOMPADDING",(0,0),(-1,-1),4)]))
     sub = Table([[Paragraph("<font color='#9BA8B5' size=7>PLATAFORMA DE GESTIÓN DE HONORARIOS · CHILE 2026</font>", styles["Normal"]), ""]], colWidths=[9*cm, 8*cm])
     story += [lt, sub, HRFlowable(width="100%", thickness=1, color=TEAL, spaceAfter=16)]
-    story += [Paragraph("<b><font size=22>Desglose de Honorarios</font></b>", styles["Normal"]), Spacer(1,4)]
-    story += [Paragraph(f"<font color='#9BA8B5' size=10>Trabajador: {nombre} · AFP: {r['afp']}</font>", styles["Normal"]), Spacer(1,16)]
+    story += [Spacer(1,8)]
+    story += [Paragraph("<b><font size=22>Desglose de Honorarios</font></b>", styles["Normal"]), Spacer(1,10)]
+    story += [Paragraph(f"<font color='#9BA8B5' size=10>Trabajador: {nombre} · AFP: {r['afp']}</font>", styles["Normal"]), Spacer(1,20)]
     # Bruto destacado
     bt = Table([[
         Paragraph("<font color='#9BA8B5' size=8>MONTO BRUTO A BOLETEAR</font>", styles["Normal"]),
@@ -498,8 +499,9 @@ def pdf_reporte(boletas, nombre):
     lt.setStyle(TableStyle([("VALIGN",(0,0),(-1,-1),"MIDDLE"),("BOTTOMPADDING",(0,0),(-1,-1),4)]))
     story += [lt, Table([[Paragraph("<font color='#9BA8B5' size=7>PLATAFORMA DE GESTIÓN DE HONORARIOS · CHILE 2026</font>", styles["Normal"]), ""]], colWidths=[9*cm, 8*cm])]
     story += [HRFlowable(width="100%", thickness=1, color=TEAL, spaceAfter=16)]
-    story += [Paragraph(f"<b><font size=22>Reporte Anual {anio}</font></b>", styles["Normal"]), Spacer(1,4)]
-    story += [Paragraph(f"<font color='#9BA8B5' size=10>Trabajador: {nombre}</font>", styles["Normal"]), Spacer(1,16)]
+    story += [Spacer(1,8)]
+    story += [Paragraph(f"<b><font size=22>Reporte Anual {anio}</font></b>", styles["Normal"]), Spacer(1,10)]
+    story += [Paragraph(f"<font color='#9BA8B5' size=10>Trabajador: {nombre}</font>", styles["Normal"]), Spacer(1,20)]
     tb=df["bruto"].sum(); tl=df["liquido"].sum(); tc=df["total_cotizaciones"].sum(); tbal=df["balance_renta"].sum()
     rt = Table([
         ["Total bruto boleteado","Total líquido recibido","Total cotizaciones","Balance anual"],
