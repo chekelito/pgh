@@ -799,7 +799,7 @@ elif st.session_state.pantalla == "pro":
               <td>{clp(row['bruto'])}</td>
               <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
           </tr>"""
-        st.markdown("""
+        st.markdown(f"""
     <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
     <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
         <thead>
