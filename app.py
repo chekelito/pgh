@@ -18,7 +18,11 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
 from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
 
-st.set_page_config(page_title="PGH · Calculadora de Honorarios", page_icon="📈", layout="centered")
+st.set_page_config(
+    page_title="PGH · Plataforma de Gestión de Honorarios",
+    page_icon="logo_pgh.png",
+    layout="centered"
+)
 
 C_BG="#160D18"; C_SURFACE="#23145B"; C_MID="#09456C"; C_ACCENT1="#026F6E"
 C_ACCENT2="#1CA39E"; C_TEXT="#FFFFFF"; C_MUTED="#9BA8B5"
