@@ -856,12 +856,13 @@ elif st.session_state.pantalla == "pro":
             paper_bgcolor="rgba(35,20,91,0.45)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=C_MUTED, family="DM Sans", size=12),
-            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=12), title=""),
+            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=12), title="", fixedrange=False),
             yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11),
-                       tickprefix="$", tickformat=",.0f", title="", rangemode="nonnegative"),
+                       tickprefix="$", tickformat=",.0f", title="", rangemode="nonnegative", fixedrange=True),
             margin=dict(t=50, b=50, l=70, r=20),
             height=340,
             bargap=0.3,
+            dragmode="pan"
         )
         st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
 
@@ -898,12 +899,13 @@ elif st.session_state.pantalla == "pro":
             paper_bgcolor="rgba(35,20,91,0.45)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=C_MUTED, family="DM Sans", size=12),
-            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=11), title=""),
+            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=11), title="", fixedrange=False),
             yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11),
-                       tickprefix="$", tickformat=",.0f", title=""),
+                       tickprefix="$", tickformat=",.0f", title="", fixedrange=True),
             margin=dict(t=50, b=50, l=80, r=20),
             height=340,
             showlegend=False,
+            dragmode="pan",
             annotations=[
                 dict(x=0.01, y=0.97, xref="paper", yref="paper",
                      text="🟢 Zona de devolución", showarrow=False,
