@@ -788,8 +788,8 @@ elif st.session_state.pantalla == "pro":
             df = pd.DataFrame(boletas)
 
             # Tabla mobile-friendly: solo columnas esenciales
-        filas = ""
-        for _, row in df.iterrows():
+            filas = ""
+            for _, row in df.iterrows():
             bal = row["balance_renta"]
             color = "#00C853" if bal >= 0 else "#FF4B4B"
             icono = "🟢" if bal >= 0 else "🔴"
@@ -799,7 +799,7 @@ elif st.session_state.pantalla == "pro":
                 <td>{clp(row['bruto'])}</td>
                 <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
             </tr>"""
-        st.markdown(f"""
+            st.markdown(f"""
         <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
         <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
             <thead>
