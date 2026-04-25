@@ -827,25 +827,32 @@ elif st.session_state.pantalla == "pro":
             use_container_width=True,
         )
 
-        # Sección para eliminar boletas
+        # --- NUEVA SECCIÓN DE ELIMINAR (DIÁLOGO MODAL) ---
         st.markdown("<br>", unsafe_allow_html=True)
-        with st.expander("Opciones de borrado"):
-            # Creamos una lista de opciones claras para el usuario
+        
+        @st.dialog("🗑️ Eliminar una boleta")
+        def modal_eliminar():
+            st.markdown("<p style='font-size:0.95rem; color:#9BA8B5;'>Selecciona la boleta que deseas eliminar permanentemente de tu historial:</p>", unsafe_allow_html=True)
             opciones_borrar = {f"{b['fecha']} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
             
-            boleta_seleccionada = st.selectbox(
-                "Selecciona la boleta que deseas eliminar:",
+            boleta_sel = st.selectbox(
+                "Boletas guardadas",
                 options=list(opciones_borrar.keys()),
-                key="sb_eliminar"
+                label_visibility="collapsed"
             )
             
-            if st.button("Confirmar eliminación", type="secondary", use_container_width=True):
-                id_a_borrar = opciones_borrar[boleta_seleccionada]
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("Confirmar Eliminación", type="primary", use_container_width=True):
+                id_a_borrar = opciones_borrar[boleta_sel]
                 if eliminar_boleta(id_a_borrar):
                     st.success("✅ Boleta eliminada correctamente.")
-                    st.rerun() # Esto recarga la app para que la boleta desaparezca de la tabla y los gráficos
+                    st.rerun()
                 else:
-                    st.error("❌ Error al eliminar la boleta.")
+                    st.error("❌ Error al intentar eliminar.")
+
+        if st.button("⚙️ Opciones de historial (Eliminar boletas)", use_container_width=True):
+            modal_eliminar()
+        # ----------------------------------------------------
 
         st.divider()
 
