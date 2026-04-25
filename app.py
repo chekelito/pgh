@@ -677,9 +677,11 @@ elif st.session_state.pantalla == "compra":
 elif st.session_state.pantalla == "activacion":
     st.markdown(f'<div style="text-align:center;margin-bottom:24px"><div style="font-size:3rem">✅</div><h2 style="font-family:Syne,sans-serif;font-weight:800;color:{C_TEXT}">¡Código válido!</h2><p style="color:{C_MUTED}">Ingresa tus datos para activar tu cuenta.</p></div>', unsafe_allow_html=True)
     nom = st.text_input("Tu nombre completo", placeholder="Juan Pérez")
-    eml = st.text_input("Tu email", placeholder="juan@gmail.com")
-    if st.button("Activar mi cuenta Pro 🚀", type="primary", use_container_width=True):
-        if nom and eml:
+    with st.form("form_login"):
+        eml = st.text_input("Tu email", placeholder="juan@gmail.com")
+        submitted = st.form_submit_button("Ingresar →", use_container_width=True)
+    if submitted:
+        if eml:
             if activar_codigo(st.session_state.codigo_validado, eml, nom):
                 st.session_state.es_pro = True
                 st.session_state.usuario_email = eml
