@@ -785,10 +785,10 @@ elif st.session_state.pantalla == "pro":
     boletas = obtener_boletas(st.session_state.usuario_email)
 
     if boletas:
-        df = pd.DataFrame(boletas)
+            df = pd.DataFrame(boletas)
 
-        # Tabla mobile-friendly: solo columnas esenciales
-          for _, row in df.iterrows():
+            # Tabla mobile-friendly: solo columnas esenciales
+    for _, row in df.iterrows():
             bal = row["balance_renta"]
             color = "#00C853" if bal >= 0 else "#FF4B4B"
             icono = "🟢" if bal >= 0 else "🔴"
