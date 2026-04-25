@@ -682,8 +682,18 @@ elif st.session_state.pantalla == "vista_previa":
 
 # ── COMPRA ────────────────────────────────────────────────────────────────────
 elif st.session_state.pantalla == "compra":
-    st.markdown(f'<h2 style="font-family:Syne,sans-serif;font-weight:800;margin-bottom:4px;color:{C_TEXT}">🔑 Obtén tu acceso Pro</h2><p style="color:{C_MUTED};font-size:0.9rem;margin-bottom:24px">3 pasos simples para activar tu cuenta</p>', unsafe_allow_html=True)
-    st.markdown(f'<div class="pgh-card"><span class="section-tag">Instrucciones</span><p style="color:{C_TEXT};margin-bottom:8px"><b>1️⃣ Transfiere $2.990</b></p><ul style="color:{C_MUTED};font-size:0.9rem;margin:8px 0 16px 16px;line-height:2"><li>Banco: BancoEstado (Cuenta RUT)</li><li>RUT: 21.553.061-2</li><li>Nombre: Exequiel Zambrano</li></ul><p style="color:{C_TEXT};margin-bottom:8px"><b>2️⃣ Envía el comprobante</b></p><p style="color:{C_MUTED};font-size:0.9rem;margin:8px 0 16px 16px">📲 WhatsApp: +56 9 5222 2772</p><p style="color:{C_TEXT}"><b>3️⃣ Recibe tu código en minutos</b></p></div>', unsafe_allow_html=True)
+    st.markdown(f'<h2 style="font-family:Syne,sans-serif;font-weight:800;margin-bottom:4px;color:{C_TEXT}">🔑 Obtén tu acceso Pro</h2>', unsafe_allow_html=True)
+    st.markdown(f'<p style="color:{C_MUTED};font-size:0.95rem;margin-bottom:24px">Desbloquea el historial ilimitado y reportes PDF al instante.</p>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="pgh-card" style="text-align: center; padding: 30px 20px;">', unsafe_allow_html=True)
+    st.markdown(f'<p style="color:{C_TEXT}; font-weight:600; font-size:1.1rem; margin-bottom:20px;">Consigue tu código de acceso aquí 👇</p>', unsafe_allow_html=True)
+    
+    # Link de WhatsApp con mensaje pre-escrito
+    mensaje_wa = "¡Hola! Quiero obtener mi código de acceso Pro para PGH 🚀"
+    link_wa = f"https://wa.me/56952222772?text={mensaje_wa.replace(' ', '%20')}"
+    
+    st.link_button("📲 Solicitar código por WhatsApp", link_wa, type="primary", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
     st.divider()
     st.markdown('<span class="section-tag">¿Ya tienes tu código?</span>', unsafe_allow_html=True)
     cod = st.text_input("Código de acceso", placeholder="PGH-PRO-XXXX", label_visibility="collapsed").strip().upper()
