@@ -69,12 +69,3 @@ def obtener_boletas(email: str) -> list:
     supabase = get_client()
     result = supabase.table("boletas").select("*").eq("usuario_email", email).order("created_at", desc=True).execute()
     return result.data
-
-def eliminar_boleta(boleta_id: int) -> bool:
-    """Elimina una boleta por su ID."""
-    supabase = get_client()
-    try:
-        supabase.table("boletas").delete().eq("id", boleta_id).execute()
-        return True
-    except Exception:
-        return False
