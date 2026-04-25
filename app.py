@@ -685,15 +685,21 @@ elif st.session_state.pantalla == "compra":
     st.markdown(f'<h2 style="font-family:Syne,sans-serif;font-weight:800;margin-bottom:4px;color:{C_TEXT}">🔑 Obtén tu acceso Pro</h2>', unsafe_allow_html=True)
     st.markdown(f'<p style="color:{C_MUTED};font-size:0.95rem;margin-bottom:24px">Desbloquea el historial ilimitado y reportes PDF al instante.</p>', unsafe_allow_html=True)
     
-    st.markdown('<div class="pgh-card" style="text-align: center; padding: 30px 20px;">', unsafe_allow_html=True)
-    st.markdown(f'<p style="color:{C_TEXT}; font-weight:600; font-size:1.1rem; margin-bottom:20px;">Consigue tu código de acceso aquí 👇</p>', unsafe_allow_html=True)
+    # Texto de invitación limpio sin cajas rotas
+    st.markdown(f'<p style="color:{C_TEXT}; font-weight:600; font-size:1.1rem; margin-top:10px; margin-bottom:15px; text-align:center;">Consigue tu código de acceso aquí 👇</p>', unsafe_allow_html=True)
     
-    # Link de WhatsApp con mensaje pre-escrito
+    # Link de WhatsApp
     mensaje_wa = "¡Hola! Quiero obtener mi código de acceso Pro para PGH 🚀"
     link_wa = f"https://wa.me/56952222772?text={mensaje_wa.replace(' ', '%20')}"
     
-    st.link_button("📲 Solicitar código por WhatsApp", link_wa, type="primary", use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Usamos un botón de link HTML directo para que tome los colores turquesa de tu CSS
+    st.markdown(f'''
+        <a href="{link_wa}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; transition: opacity 0.2s;">
+            📲 Solicitar código por WhatsApp
+        </a>
+    ''', unsafe_allow_html=True)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
     st.divider()
     st.markdown('<span class="section-tag">¿Ya tienes tu código?</span>', unsafe_allow_html=True)
     cod = st.text_input("Código de acceso", placeholder="PGH-PRO-XXXX", label_visibility="collapsed").strip().upper()
