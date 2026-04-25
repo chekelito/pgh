@@ -18,25 +18,31 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
 from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
 
-# --- CONFIGURACIÓN DE PESTAÑA (LOGO DINÁMICO) ---
+# --- CONFIGURACIÓN DE PESTAÑA (LOGO ORIGINAL PGH) ---
 favicon_svg = """
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-    <rect width='100' height='100' rx='15' fill='#23145B'/>
-    <rect x='15' y='55' width='22' height='30' rx='4' fill='#1CA39E' opacity='0.7'/>
-    <rect x='42' y='40' width='22' height='45' rx='4' fill='#1CA39E' opacity='0.85'/>
-    <rect x='69' y='25' width='22' height='60' rx='4' fill='#1CA39E'/>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 145'>
+    <defs>
+        <linearGradient id='dg' x1='0%' y1='0%' x2='100%' y2='100%'>
+            <stop offset='0%' style='stop-color:%2309456C'/>
+            <stop offset='100%' style='stop-color:%2323145B'/>
+        </linearGradient>
+    </defs>
+    <rect x='2' y='2' width='106' height='136' rx='12' fill='url(%23dg)' stroke='%231CA39E' stroke-width='10'/>
+    <text x='30' y='85' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' opacity='0.7' text-anchor='middle'>P</text>
+    <text x='55' y='65' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' opacity='0.85' text-anchor='middle'>G</text>
+    <text x='80' y='45' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' text-anchor='middle'>H</text>
 </svg>
 """
 
-# Codificación especial para que el navegador lo lea como imagen
-favicon_data = f"data:image/svg+xml,{favicon_svg.replace('#', '%23').replace('>', '%3E').replace('<', '%3C')}"
+# Codificación compatible con todos los navegadores
+favicon_data = f"data:image/svg+xml,{favicon_svg.replace(' ', '%20').replace('#', '%23')}"
 
 st.set_page_config(
     page_title="PGH · Plataforma de Gestión de Honorarios",
     page_icon=favicon_data,
     layout="centered"
 )
-# -----------------------------------------------
+# ---------------------------------------------------
 
 C_BG="#160D18"; C_SURFACE="#23145B"; C_MID="#09456C"; C_ACCENT1="#026F6E"
 C_ACCENT2="#1CA39E"; C_TEXT="#FFFFFF"; C_MUTED="#9BA8B5"
