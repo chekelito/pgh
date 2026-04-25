@@ -18,23 +18,26 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
 from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
 
-# --- CONFIGURACIÓN DE PESTAÑA (LOGO ORIGINAL PGH) ---
+# --- CONFIGURACIÓN DE PESTAÑA (LOGO COMPLETO PGH) ---
 favicon_svg = """
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 145'>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 150'>
     <defs>
         <linearGradient id='dg' x1='0%' y1='0%' x2='100%' y2='100%'>
             <stop offset='0%' style='stop-color:%2309456C'/>
             <stop offset='100%' style='stop-color:%2323145B'/>
         </linearGradient>
     </defs>
-    <rect x='2' y='2' width='106' height='136' rx='12' fill='url(%23dg)' stroke='%231CA39E' stroke-width='10'/>
-    <text x='30' y='85' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' opacity='0.7' text-anchor='middle'>P</text>
-    <text x='55' y='65' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' opacity='0.85' text-anchor='middle'>G</text>
-    <text x='80' y='45' font-family='sans-serif' font-size='24' font-weight='900' fill='%231CA39E' text-anchor='middle'>H</text>
+    <rect x='4' y='4' width='102' height='132' rx='12' fill='url(%23dg)' stroke='%231CA39E' stroke-width='10'/>
+    <text x='29' y='75' font-family='sans-serif' font-size='22' font-weight='900' fill='%231CA39E' opacity='0.7' text-anchor='middle'>P</text>
+    <text x='55' y='57' font-family='sans-serif' font-size='22' font-weight='900' fill='%231CA39E' opacity='0.85' text-anchor='middle'>G</text>
+    <text x='81' y='39' font-family='sans-serif' font-size='22' font-weight='900' fill='%231CA39E' text-anchor='middle'>H</text>
+    <rect x='20' y='85' width='18' height='32' rx='3' fill='%231CA39E' opacity='0.4'/>
+    <rect x='45' y='70' width='18' height='47' rx='3' fill='%231CA39E' opacity='0.7'/>
+    <rect x='70' y='55' width='18' height='62' rx='3' fill='%231CA39E' opacity='1'/>
 </svg>
 """
 
-# Codificación compatible con todos los navegadores
+# Codificación compatible
 favicon_data = f"data:image/svg+xml,{favicon_svg.replace(' ', '%20').replace('#', '%23')}"
 
 st.set_page_config(
