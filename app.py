@@ -16,7 +16,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
-from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
+from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas
 
 st.set_page_config(page_title="PGH · Calculadora de Honorarios", page_icon="📈", layout="centered")
 
@@ -788,27 +788,34 @@ elif st.session_state.pantalla == "pro":
             df = pd.DataFrame(boletas)
 
             # Tabla mobile-friendly: solo columnas esenciales
-    for _, row in df.iterrows():
+    filas = ""
+        for _, row in df.iterrows():
             bal = row["balance_renta"]
             color = "#00C853" if bal >= 0 else "#FF4B4B"
             icono = "🟢" if bal >= 0 else "🔴"
-            col_fecha, col_liq, col_bruto, col_bal, col_del = st.columns([2, 2, 2, 2, 1])
-            with col_fecha:
-                st.markdown(f'<div style="color:{C_TEXT};font-size:0.88rem;padding:8px 0">{row["fecha"]}</div>', unsafe_allow_html=True)
-            with col_liq:
-                st.markdown(f'<div style="color:{C_TEXT};font-size:0.88rem;padding:8px 0">{clp(row["liquido"])}</div>', unsafe_allow_html=True)
-            with col_bruto:
-                st.markdown(f'<div style="color:{C_TEXT};font-size:0.88rem;padding:8px 0">{clp(row["bruto"])}</div>', unsafe_allow_html=True)
-            with col_bal:
-                st.markdown(f'<div style="color:{color};font-size:0.88rem;font-weight:600;padding:8px 0">{icono} {clp(bal)}</div>', unsafe_allow_html=True)
-            with col_del:
-                if st.button("🗑️", key=f"del_{row['id']}", help="Eliminar boleta"):
-                    if eliminar_boleta(row["id"]):
-                        st.success("Boleta eliminada.")
-                        st.rerun()
-                    else:
-                        st.error("Error al eliminar.")
-            st.markdown('<hr style="border-color:rgba(28,163,158,0.1);margin:0">', unsafe_allow_html=True)
+            filas += f"""<tr>
+                <td>{row['fecha']}</td>
+                <td>{clp(row['liquido'])}</td>
+                <td>{clp(row['bruto'])}</td>
+                <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
+            </tr>"""
+        st.markdown(f"""
+        <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
+        <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
+            <thead>
+                <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
+                    <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
+                </tr>
+            </thead>
+            <tbody style="color:#FFFFFF">
+                {filas}
+            </tbody>
+        </table>
+        </div>
+        """, unsafe_allow_html=True)
 
         # Botón reporte anual
         st.markdown("<br>", unsafe_allow_html=True)
