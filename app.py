@@ -16,7 +16,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
-from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas
+from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
 
 st.set_page_config(page_title="PGH · Calculadora de Honorarios", page_icon="📈", layout="centered")
 
@@ -826,6 +826,26 @@ elif st.session_state.pantalla == "pro":
             mime="application/pdf",
             use_container_width=True,
         )
+
+        # Nueva sección para eliminar boletas
+        st.markdown("<br>", unsafe_allow_html=True)
+        with st.expander("🗑️ ¿Te equivocaste? Eliminar una boleta"):
+            # Creamos una lista de opciones legibles para el usuario
+            opciones_borrar = {f"{b['fecha']} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
+            
+            boleta_seleccionada = st.selectbox(
+                "Selecciona la boleta que deseas eliminar:",
+                options=list(opciones_borrar.keys()),
+                key="sb_eliminar"
+            )
+            
+            if st.button("Confirmar eliminación", type="secondary", use_container_width=True):
+                id_a_borrar = opciones_borrar[boleta_seleccionada]
+                if eliminar_boleta(id_a_borrar):
+                    st.success("✅ Boleta eliminada.")
+                    st.rerun() # Recarga la app para limpiar los gráficos y la tabla
+                else:
+                    st.error("❌ Error al eliminar.")
 
         st.divider()
 
