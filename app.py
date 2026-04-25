@@ -788,7 +788,7 @@ elif st.session_state.pantalla == "pro":
             df = pd.DataFrame(boletas)
 
             # Tabla mobile-friendly: solo columnas esenciales
-    filas = ""
+        filas = ""
         for _, row in df.iterrows():
             bal = row["balance_renta"]
             color = "#00C853" if bal >= 0 else "#FF4B4B"
