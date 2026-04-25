@@ -942,3 +942,6 @@ elif st.session_state.pantalla == "pro":
 
     st.divider()
     st.markdown(disclaimer(), unsafe_allow_html=True)
+
+
+
