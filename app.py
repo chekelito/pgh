@@ -827,10 +827,10 @@ elif st.session_state.pantalla == "pro":
             use_container_width=True,
         )
 
-       # Nueva sección para eliminar boletas
+        # Sección para eliminar boletas
         st.markdown("<br>", unsafe_allow_html=True)
-        with st.expander("Eliminar una boleta"):
-            # Creamos una lista de opciones legibles para el usuario
+        with st.expander("¿Te equivocaste? Eliminar una boleta"):
+            # Creamos una lista de opciones claras para el usuario
             opciones_borrar = {f"{b['fecha']} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
             
             boleta_seleccionada = st.selectbox(
@@ -842,10 +842,10 @@ elif st.session_state.pantalla == "pro":
             if st.button("Confirmar eliminación", type="secondary", use_container_width=True):
                 id_a_borrar = opciones_borrar[boleta_seleccionada]
                 if eliminar_boleta(id_a_borrar):
-                    st.success("✅ Boleta eliminada.")
-                    st.rerun() # Recarga la app para limpiar los gráficos y la tabla
+                    st.success("✅ Boleta eliminada correctamente.")
+                    st.rerun() # Esto recarga la app para que la boleta desaparezca de la tabla y los gráficos
                 else:
-                    st.error("❌ Error al eliminar.")
+                    st.error("❌ Error al eliminar la boleta.")
 
         st.divider()
 
