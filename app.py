@@ -829,7 +829,7 @@ elif st.session_state.pantalla == "pro":
 
        # Nueva sección para eliminar boletas
         st.markdown("<br>", unsafe_allow_html=True)
-        with st.expander("¿Te equivocaste? Eliminar una boleta"):
+        with st.expander("Eliminar una boleta"):
             # Creamos una lista de opciones legibles para el usuario
             opciones_borrar = {f"{b['fecha']} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
             
