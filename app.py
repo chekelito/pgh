@@ -18,11 +18,25 @@ from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
 from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
 
+# --- CONFIGURACIÓN DE PESTAÑA (LOGO DINÁMICO) ---
+favicon_svg = """
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+    <rect width='100' height='100' rx='15' fill='#23145B'/>
+    <rect x='15' y='55' width='22' height='30' rx='4' fill='#1CA39E' opacity='0.7'/>
+    <rect x='42' y='40' width='22' height='45' rx='4' fill='#1CA39E' opacity='0.85'/>
+    <rect x='69' y='25' width='22' height='60' rx='4' fill='#1CA39E'/>
+</svg>
+"""
+
+# Codificación especial para que el navegador lo lea como imagen
+favicon_data = f"data:image/svg+xml,{favicon_svg.replace('#', '%23').replace('>', '%3E').replace('<', '%3C')}"
+
 st.set_page_config(
     page_title="PGH · Plataforma de Gestión de Honorarios",
-    page_icon="logo_pgh.png",
+    page_icon=favicon_data,
     layout="centered"
 )
+# -----------------------------------------------
 
 C_BG="#160D18"; C_SURFACE="#23145B"; C_MID="#09456C"; C_ACCENT1="#026F6E"
 C_ACCENT2="#1CA39E"; C_TEXT="#FFFFFF"; C_MUTED="#9BA8B5"
