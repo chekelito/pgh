@@ -78,3 +78,20 @@ def eliminar_boleta(boleta_id) -> bool:
         return True
     except Exception:
         return False
+
+def obtener_todos_usuarios():
+    """Trae la lista de todos los usuarios para el panel de admin."""
+    supabase = get_client()
+    res = supabase.table("usuarios").select("*").order("fecha_registro", desc=True).execute()
+    return res.data
+
+def renovar_suscripcion_usuario(email):
+    """Actualiza la fecha de registro a hoy para reiniciar los 30 días."""
+    supabase = get_client()
+    try:
+        supabase.table("usuarios").update({
+            "fecha_registro": str(__import__("datetime").date.today())
+        }).eq("email", email).execute()
+        return True
+    except Exception:
+        return False
