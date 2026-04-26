@@ -98,18 +98,18 @@ html, body, [class*="css"], [class*="st-"] {{
   margin-bottom: 6px !important;
 }}
 
-/* ── Selectbox (Estilo Botón) ── */
+/* ── Selectbox (Estilo Botón Corregido) ── */
 .stSelectbox > div > div {{
   background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%) !important;
   border: 1.5px solid rgba(28,163,158,0.5) !important;
-  border-radius: 20px !important;
+  border-radius: 16px !important; /* Curva un poco más suave para no morder el texto */
   color: #1a1040 !important;
   font-family: 'DM Sans', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
-  padding: 4px 8px !important;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
   transition: all 0.2s ease !important;
+  /* Eliminamos el 'padding' que estaba asfixiando el texto */
 }}
 
 /* Efecto al pasar el mouse por encima (Hover) */
