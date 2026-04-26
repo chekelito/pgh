@@ -1161,40 +1161,39 @@ elif st.session_state.pantalla == "pro":
         # Solo mostramos esto si la base de datos completa está vacía, para no duplicar el mensaje del mes.
         st.info("Aún no tienes boletas guardadas. Calcula y guarda tu primera boleta arriba. 👆")
     
-    # ── PANEL DE ADMINISTRACIÓN (Solo visible para admin@gmail.com) ──
+    # ── PANEL DE ADMINISTRACIÓN (Versión Diálogo Pro) ──
     if st.session_state.usuario_email == "admin@gmail.com":
         st.markdown('<br>', unsafe_allow_html=True)
         st.markdown('<span class="section-tag" style="color:#FF4B4B">🔐 Centro de Control Admin</span>', unsafe_allow_html=True)
         
-        # Usamos un expander para que no ocupe espacio visual si no lo estás usando
-        with st.expander(" ⚙️ Gestionar Renovaciones de Usuarios"):
+        @st.dialog("Gestión de Usuarios (Admin)")
+        def modal_admin():
+            st.markdown("<p style='font-size:0.95rem; color:#9BA8B5; margin-bottom: 20px;'>Lista de usuarios registrados y estado de suscripción:</p>", unsafe_allow_html=True)
+            
             usuarios_lista = obtener_todos_usuarios()
             if usuarios_lista:
                 for u in usuarios_lista:
-                    # No te listes a ti mismo para evitar errores
                     if u['email'] == st.session_state.usuario_email:
                         continue
                     
-                    # Layout de 3 columnas para cada usuario
-                    c_info, c_estado, c_accion = st.columns([2, 1, 1])
-                    
-                    with c_info:
-                        st.markdown(f"**{u['nombre']}**<br><small>{u['email']}</small>", unsafe_allow_html=True)
-                    
-                    with c_estado:
-                        # Calculamos los días que le quedan a este usuario
-                        d = calcular_dias_restantes(u['email'])
-                        col_txt = "#00C853" if d > 0 else "#FF4B4B"
-                        st.markdown(f"<small style='color:{col_txt}'>{d} días rest.</small>", unsafe_allow_html=True)
-                    
-                    with c_accion:
-                        # Botón para renovar la suscripción
-                        if st.button("Renovar", key=f"ren_{u['email']}", use_container_width=True):
-                            if renovar_suscripcion_usuario(u['email']):
-                                st.success(f"¡{u['nombre']} renovado!")
-                                st.rerun()
+                    with st.container():
+                        c_info, c_btn = st.columns([2, 1])
+                        with c_info:
+                            d = calcular_dias_restantes(u['email'])
+                            color_t = "#00C853" if d > 0 else "#FF4B4B"
+                            st.markdown(f"**{u['nombre']}**<br><small>{u['email']}</small><br><small style='color:{color_t}; font-weight:600'>{d} días restantes</small>", unsafe_allow_html=True)
+                        with c_btn:
+                            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+                            if st.button("Renovar", key=f"mod_ren_{u['email']}", use_container_width=True):
+                                if renovar_suscripcion_usuario(u['email']):
+                                    st.success(f"¡{u['nombre']} renovado!")
+                                    st.rerun()
+                        st.divider()
             else:
-                st.info("No hay otros usuarios registrados en el sistema.")
+                st.info("No hay otros usuarios registrados.")
+
+        if st.button("🔑 Abrir Panel de Renovaciones", use_container_width=True):
+            modal_admin()
     
     st.divider()
     st.markdown(disclaimer(), unsafe_allow_html=True)
