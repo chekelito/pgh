@@ -825,7 +825,7 @@ elif st.session_state.pantalla == "pro":
         st.markdown(f'<div class="pgh-result"><div class="pgh-result-label">Monto bruto a boletear</div><div class="pgh-result-value">{clp(r["bruto"])}</div><div class="pgh-result-sub">Recibirás {clp(r["liquido_final"])} líquidos · Retención SII: {clp(r["retencion_sii"])}</div></div>', unsafe_allow_html=True)
         # Cotizaciones
         st.markdown('<span class="section-tag">Cotizaciones Obligatorias</span>', unsafe_allow_html=True)
-        st.caption(f"Base imponible: {clp(r['base_imponible'])} · Tope legal (90 UF): {clp(r['tope_legal'])}")
+        st.markdown(f"<div style='font-size:0.85rem; color:#FFFFFF; margin-bottom:15px'>Base imponible: {clp(r['base_imponible'])} &middot; <span style='color:#00C853'>Tope legal (90 UF): {clp(r['tope_legal'])}</span></div>", unsafe_allow_html=True)
         c1, c2, c3, c4 = st.columns(4)
         with c1: st.markdown(mcard("Salud (7%)", clp(r['pago_salud'])), unsafe_allow_html=True)
         with c2: st.markdown(mcard(f"AFP+SIS ({r['tasa_afp']*100:.2f}%)", clp(r['pago_afp'])), unsafe_allow_html=True)
