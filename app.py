@@ -1167,7 +1167,7 @@ elif st.session_state.pantalla == "pro":
         st.markdown('<span class="section-tag" style="color:#FF4B4B">🔐 Centro de Control Admin</span>', unsafe_allow_html=True)
         
         # Usamos un expander para que no ocupe espacio visual si no lo estás usando
-        with st.expander("Gestionar Renovaciones de Usuarios"):
+        with st.expander(" ⚙️ Gestionar Renovaciones de Usuarios"):
             usuarios_lista = obtener_todos_usuarios()
             if usuarios_lista:
                 for u in usuarios_lista:
