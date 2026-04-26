@@ -44,6 +44,16 @@ st.set_page_config(
     page_icon=favicon_data,
     layout="centered"
 )
+
+# --- OCULTAR TEXTO "PRESS ENTER TO APPLY" ---
+st.markdown("""
+    <style>
+        [data-testid="InputInstructions"] {
+            display: none !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # ---------------------------------------------------
 
 C_BG="#160D18"; C_SURFACE="#23145B"; C_MID="#09456C"; C_ACCENT1="#026F6E"
