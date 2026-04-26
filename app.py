@@ -648,6 +648,7 @@ if st.session_state.pantalla in ["free", "pro"]:
             st.rerun()
             
         st.markdown("<div style='margin-bottom: 24px;'></div>", unsafe_allow_html=True)
+    
     else:
         # Si es Pro, o si es Free pero lleva menos de 3, muestra la calculadora
         if not st.session_state.es_pro:
