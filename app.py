@@ -830,7 +830,7 @@ elif st.session_state.pantalla == "compra":
     
     # Link de WhatsApp
     mensaje_wa = "¡Hola! Quiero obtener mi código de acceso Pro para PGH 🚀"
-    link_wa = f"https://wa.me/56952222772?text={mensaje_wa.replace(' ', '%20')}"
+    link_wa = f"https://wa.me/56937896790?text={mensaje_wa.replace(' ', '%20')}"
     
     # Usamos un botón de link HTML directo para que tome los colores turquesa de tu CSS
     st.markdown(f'''
@@ -933,7 +933,7 @@ elif st.session_state.pantalla == "pro":
 
         # Link de WhatsApp con mensaje pre-escrito
         mensaje_renovacion = "¡Hola! Mi suscripción Pro de PGH expiró y quiero renovarla 🚀"
-        link_renovacion = f"https://wa.me/56952222772?text={mensaje_renovacion.replace(' ', '%20')}"
+        link_renovacion = f"https://wa.me/56937896790?text={mensaje_renovacion.replace(' ', '%20')}"
 
         st.markdown(f'''
             <a href="{link_renovacion}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: opacity 0.2s; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(28,163,158,0.2);">
