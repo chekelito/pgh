@@ -8,7 +8,7 @@ import requests
 import plotly.graph_objects as go
 import pandas as pd
 import io
-from datetime import date
+from datetime import date, datetime, timedelta
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
@@ -458,6 +458,34 @@ def obtener_uf():
 def clp(v):
     return f"${v:,.0f}".replace(",", ".")
 
+def calcular_dias_restantes(email):
+    """Calcula cuántos días le quedan al usuario Pro."""
+    try:
+        from supabase_client import get_client
+        supabase = get_client()
+        
+        # 1. Buscamos en Supabase cuándo se registró este usuario
+        res = supabase.table("usuarios").select("fecha_registro").eq("email", email).execute()
+        
+        if res.data:
+            # 2. Si lo encontramos, extraemos esa fecha
+            fecha_str = res.data[0]["fecha_registro"]
+            fecha_registro = datetime.strptime(fecha_str, "%Y-%m-%d").date()
+            
+            # 3. Le sumamos 30 días de suscripción
+            fecha_expiracion = fecha_registro + timedelta(days=30)
+            
+            # 4. Vemos la diferencia entre la fecha de expiración y el día de hoy
+            dias_restantes = (fecha_expiracion - date.today()).days
+            
+            # 5. Entregamos el resultado (usamos max para que nunca dé números negativos)
+            return max(0, dias_restantes) 
+    except Exception as e:
+        print(f"Error al calcular días: {e}")
+        
+    # Si algo falla, por defecto decimos 30
+    return 30
+
 def mcard(label, value, color=C_TEXT):
     return f'<div class="metric-card"><div class="metric-label">{label}</div><div class="metric-value" style="color:{color}">{value}</div></div>'
 
@@ -648,7 +676,38 @@ if st.session_state.pantalla in ["free", "pro"]:
         st.session_state.mostrar_bienvenida = False
 
     if st.session_state.es_pro:
-        st.markdown(f'<div style="margin-bottom:12px"><span style="font-family:Syne,sans-serif;font-size:1.05rem;font-weight:700;color:{C_TEXT}">{st.session_state.usuario_nombre.split()[0]}</span><span class="pro-badge">PRO</span></div>', unsafe_allow_html=True)
+        # Llamamos a la función que acabas de crear
+        dias_restantes = calcular_dias_restantes(st.session_state.usuario_email)
+        
+        # Colores por defecto (Turquesa/Gris)
+        color_pildora = C_MUTED
+        borde_pildora = "rgba(28,163,158,0.2)"
+        fondo_pildora = "rgba(28,163,158,0.1)"
+        icono = "⏳"
+        
+        # Lógica de urgencia
+        if dias_restantes <= 3:
+            color_pildora = C_DANGER # Rojo
+            borde_pildora = "rgba(255,75,75,0.4)"
+            fondo_pildora = "rgba(255,75,75,0.15)"
+            icono = "⚠️"
+        elif dias_restantes <= 7:
+            color_pildora = "#FFD580" # Naranja
+            borde_pildora = "rgba(255,165,0,0.4)"
+            fondo_pildora = "rgba(255,165,0,0.1)"
+
+        nombre = st.session_state.usuario_nombre.split()[0]
+        
+        # Imprimimos en pantalla
+        st.markdown(f'''
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px;">
+                <span style="font-family:Syne,sans-serif;font-size:1.05rem;font-weight:700;color:{C_TEXT}">{nombre}</span>
+                <span class="pro-badge">PRO</span>
+                <span style="color: {color_pildora}; font-size: 0.75rem; background: {fondo_pildora}; padding: 3px 10px; border-radius: 99px; border: 1px solid {borde_pildora}; font-weight: 500;">
+                    {icono} {dias_restantes} días restantes
+                </span>
+            </div>
+        ''', unsafe_allow_html=True)
 
     st.markdown('<span class="section-tag">Calculadora</span>', unsafe_allow_html=True)
 
