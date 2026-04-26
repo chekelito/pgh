@@ -562,7 +562,10 @@ def pdf_reporte(boletas, nombre):
     hd = [["Fecha","Líquido","Bruto","AFP","Total Cotiz.","Balance"]]
     rbg = []
     for i, (_, row) in enumerate(df.iterrows()):
-        hd.append([str(row["fecha"]), clp(row["liquido"]), clp(row["bruto"]), str(row["afp"]), clp(row["total_cotizaciones"]), clp(row["balance_renta"])])
+        # Limpiamos la fecha para que solo muestre Día/Mes/Año
+        fecha_limpia = pd.to_datetime(row["fecha"]).strftime("%d/%m/%Y")
+        
+        hd.append([fecha_limpia, clp(row["liquido"]), clp(row["bruto"]), str(row["afp"]), clp(row["total_cotizaciones"]), clp(row["balance_renta"])])
         rbg.append(("BACKGROUND",(0,i+1),(-1,i+1), T("#F0FFF4") if row["balance_renta"]>=0 else T("#FFF5F5")))
     ht = Table(hd, colWidths=[2.5*cm, 2.8*cm, 2.8*cm, 2*cm, 3*cm, 2.9*cm])
     ht.setStyle(TableStyle([
