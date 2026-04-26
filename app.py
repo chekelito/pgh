@@ -825,8 +825,38 @@ elif st.session_state.pantalla == "pro":
 
     # Historial
     st.markdown('<span class="section-tag">Historial de Boletas</span>', unsafe_allow_html=True)
-    boletas = obtener_boletas(st.session_state.usuario_email)
+    
+    # 1. Traer datos
+    todas_las_boletas = obtener_boletas(st.session_state.usuario_email)
+    
+    if todas_las_boletas:
+        df_full = pd.DataFrame(todas_las_boletas)
+        df_full["fecha"] = pd.to_datetime(df_full["fecha"])
+        
+        # 2. Crear los selectores de filtro
+        c1, c2 = st.columns(2)
+        with c1:
+            anios = sorted(df_full["fecha"].dt.year.unique(), reverse=True)
+            anio_sel = st.selectbox("📅 Año", options=anios)
+        with c2:
+            meses_nombres = {
+                1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
+                7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
+            }
+            mes_sel = st.selectbox("🗓️ Mes", options=list(meses_nombres.values()))
+            # Convertir nombre de mes a número
+            mes_num = [k for k, v in meses_nombres.items() if v == mes_sel][0]
 
+        # 3. Filtrar el DataFrame
+        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.year == anio_sel)] # Se sobreescribe 'df' para que el resto de tu código funcione igual
+        
+        # Filtrado final para la tabla
+        boletas = df.to_dict('records') 
+        
+        if not boletas:
+            st.info(f"No hay boletas registradas para {mes_sel} de {anio_sel}.")
+        
+        # --- A partir de aquí sigue tu código original de la tabla (<tr>...) ---
     if boletas:
         df = pd.DataFrame(boletas)
 
