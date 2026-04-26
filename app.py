@@ -108,7 +108,15 @@ html, body, [class*="css"], [class*="st-"] {{
   font-size: 1rem !important;
   font-weight: 500 !important;
 }}
+/* Bloquear teclado en celular para los menús desplegables */
+div[data-baseweb="select"] input {
+  pointer-events: none !important;
+  caret-color: transparent !important;
+}
 
+div[data-baseweb="select"] {
+  cursor: pointer !important;
+}
 /* Dropdown options */
 [data-baseweb="popover"] li,
 [data-baseweb="menu"] li {{
