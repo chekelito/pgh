@@ -1016,55 +1016,39 @@ elif st.session_state.pantalla == "pro":
         )
         st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
 
-        # Gráfico 2: Línea balance acumulado
+        # Gráfico 2: Balance Acumulado (Estilo Semáforo - Muy fácil de entender)
         ds = df.sort_values("fecha").copy()
         ds["balance_acumulado"] = ds["balance_renta"].cumsum()
-        ds["fecha_str"] = ds["fecha"].dt.strftime("%d/%m/%Y")
-        max_bal = ds["balance_acumulado"].max()
-        min_bal = ds["balance_acumulado"].min()
+        ds["fecha_str"] = ds["fecha"].dt.strftime("%d/%b")
+        
+        # Asignamos colores: Verde si es positivo, Rojo si es negativo
+        colores_bal = ["#00C853" if v >= 0 else "#FF4B4B" for v in ds["balance_acumulado"]]
 
         fig2 = go.Figure()
-        # Zona positiva verde
-        if max_bal > 0:
-            fig2.add_hrect(y0=0, y1=max(max_bal * 1.3, 1), fillcolor="rgba(0,200,83,0.06)", line_width=0)
-        # Zona negativa roja
-        if min_bal < 0:
-            fig2.add_hrect(y0=min(min_bal * 1.3, -1), y1=0, fillcolor="rgba(255,75,75,0.06)", line_width=0)
-        fig2.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.25)", line_width=1.5)
-        fig2.add_trace(go.Scatter(
+        fig2.add_trace(go.Bar(
             x=ds["fecha_str"],
             y=ds["balance_acumulado"],
-            mode="lines+markers",
-            line=dict(color=C_ACCENT2, width=3),
-            marker=dict(color=C_ACCENT2, size=9, line=dict(color=C_BG, width=2)),
-            fill="tozeroy",
-            fillcolor="rgba(28,163,158,0.08)",
+            marker_color=colores_bal,
             text=[clp(v) for v in ds["balance_acumulado"]],
-            textposition="top center",
-            textfont=dict(color=C_TEXT, size=11, family="DM Sans"),
-            hovertemplate="<b>%{x}</b><br>Balance: %{text}<extra></extra>",
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=11),
         ))
+
         fig2.update_layout(
-            title=dict(text="Balance acumulado en el año", font=dict(color=C_TEXT, size=15, family="Syne"), x=0),
-            paper_bgcolor="rgba(35,20,91,0.45)",
+            title=dict(text="Mi saldo acumulado para Abril", font=dict(color=C_TEXT, size=15, family="Syne")),
+            paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color=C_MUTED, family="DM Sans", size=12),
-            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=11), title="", fixedrange=False),
-            yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11),
-                       tickprefix="$", tickformat=",.0f", title="", fixedrange=False),
-            margin=dict(t=50, b=50, l=80, r=20),
-            height=340,
+            font=dict(color=C_MUTED, family="DM Sans"),
+            xaxis=dict(showgrid=False, tickfont=dict(color=C_TEXT)),
+            yaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickprefix="$", tickfont=dict(color=C_MUTED)),
+            margin=dict(t=50, b=40, l=60, r=20),
+            height=320,
             showlegend=False,
-            dragmode="pan",
-            annotations=[
-                dict(x=0.01, y=0.97, xref="paper", yref="paper",
-                     text="🟢 Zona de devolución", showarrow=False,
-                     font=dict(color=C_SUCCESS, size=11), xanchor="left"),
-                dict(x=0.01, y=0.03, xref="paper", yref="paper",
-                     text="🔴 Zona de pago", showarrow=False,
-                     font=dict(color=C_DANGER, size=11), xanchor="left"),
-            ] if max_bal > 0 and min_bal < 0 else [],
+            dragmode=False
         )
+        # Añadimos línea de equilibrio
+        fig2.add_hline(y=0, line_width=2, line_color="white", opacity=0.3)
+        
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
     elif not todas_las_boletas:
