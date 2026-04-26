@@ -835,12 +835,17 @@ elif st.session_state.pantalla == "compra":
 
 # ── ACTIVACIÓN ────────────────────────────────────────────────────────────────
 elif st.session_state.pantalla == "activacion":
-    st.markdown(f'<div style="text-align:center;margin-bottom:24px"><div style="font-size:3rem">✅</div><h2 style="font-family:Syne,sans-serif;font-weight:800;color:{C_TEXT}">¡Código válido!</h2><p style="color:{C_MUTED}">Ingresa tus datos para activar tu cuenta.</p></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="text-align:center;margin-bottom:24px"><div style="font-size:3rem">✅</div><h2 style="font-family:Syne,sans-serif;font-weight:800;color:{C_TEXT}">¡Código válido!</h2><p style="color:{C_MUTED}">Crea tu cuenta segura para activar el Pro.</p></div>', unsafe_allow_html=True)
+    
     nom = st.text_input("Tu nombre completo", placeholder="Juan Pérez")
     eml = st.text_input("Tu email", placeholder="juan@gmail.com")
-    if st.button("Ingresar →", type="primary", use_container_width=True):
-        if eml:
-            if activar_codigo(st.session_state.codigo_validado, eml, nom):
+    # Aquí agregamos el campo para que invente su contraseña:
+    pwd = st.text_input("Crea una contraseña", type="password", placeholder="••••••••")
+    
+    if st.button("Activar mi cuenta →", type="primary", use_container_width=True):
+        if nom and eml and pwd:
+            # Aquí le enviamos la contraseña (pwd) a la función que modificaste antes
+            if activar_codigo(st.session_state.codigo_validado, eml, nom, pwd):
                 st.session_state.es_pro = True
                 st.session_state.usuario_email = eml
                 st.session_state.usuario_nombre = nom
@@ -851,18 +856,25 @@ elif st.session_state.pantalla == "activacion":
             else:
                 st.error("Error al activar. Contáctanos por WhatsApp.")
         else:
-            st.warning("Por favor completa todos los campos.")
+            st.warning("Por favor completa todos los campos, incluyendo tu nueva contraseña.")
 
 # ── LOGIN DIRECTO ─────────────────────────────────────────────────────────────
 elif st.session_state.pantalla == "login_directo":
-    st.markdown(f'<h2 style="font-family:Syne,sans-serif;font-weight:800;margin-bottom:4px;color:{C_TEXT}">👤 Iniciar sesión</h2><p style="color:{C_MUTED};margin-bottom:24px">Ingresa tu email para acceder a tu cuenta Pro.</p>', unsafe_allow_html=True)
+    st.markdown(f'<h2 style="font-family:Syne,sans-serif;font-weight:800;margin-bottom:4px;color:{C_TEXT}">👤 Iniciar sesión</h2><p style="color:{C_MUTED};margin-bottom:24px">Ingresa tus credenciales para acceder a PGH Pro.</p>', unsafe_allow_html=True)
+    
     eml = st.text_input("Tu email", placeholder="juan@gmail.com")
+    # Agregamos el campo de contraseña
+    pwd = st.text_input("Tu contraseña", type="password", placeholder="••••••••")
+    
     if st.button("Ingresar →", type="primary", use_container_width=True):
-        if eml:
-            if es_usuario_pro(eml):
+        if eml and pwd:
+            # Usamos la nueva función que verifica email Y contraseña
+            if validar_login(eml, pwd):
+                # Si es válido, traemos su nombre para la bienvenida
                 from supabase_client import get_client
                 res = get_client().table("usuarios").select("nombre").eq("email", eml).execute()
                 nom = res.data[0]["nombre"] if res.data else eml
+                
                 st.session_state.es_pro = True
                 st.session_state.usuario_email = eml
                 st.session_state.usuario_nombre = nom
@@ -871,13 +883,14 @@ elif st.session_state.pantalla == "login_directo":
                 st.session_state.pantalla = "pro"
                 st.rerun()
             else:
-                st.error("❌ No encontramos una cuenta Pro con ese email.")
-                st.info("¿Aún no tienes el Pro? Vuelve y haz clic en 'Ver desglose completo'.")
+                st.error("❌ Email o contraseña incorrectos.")
         else:
-            st.warning("Por favor ingresa tu email.")
+            st.warning("Por favor ingresa tu email y contraseña.")
+            
     if st.button("← Volver", use_container_width=True):
-        st.session_state.pantalla = "free"; st.rerun()
-
+        st.session_state.pantalla = "free"
+        st.rerun()
+            
 # ── PRO ───────────────────────────────────────────────────────────────────────
 elif st.session_state.pantalla == "pro":
     # 1. Calculamos los días apenas intenta entrar a la pantalla Pro
