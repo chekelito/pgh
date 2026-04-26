@@ -427,6 +427,19 @@ hr {{ border-color: rgba(28,163,158,0.15) !important; }}
   .stDataFrame td, .stDataFrame th {{ font-size: 0.78rem !important; }}
 }}
 
+/* --- ARREGLO PARA MODO CLARO (FORZAR VISIBILIDAD) --- */
+.stCaption, .stMarkdown em, .stMarkdown p {{
+    color: #9BA8B5 !important;
+}}
+
+.stNumberInput label, .stTextInput label, .stSelectbox label {{
+    color: #9BA8B5 !important;
+}}
+
+.pgh-result-sub {{
+    color: #9BA8B5 !important;
+}}
+
 footer {{ visibility: hidden; }}
 #MainMenu {{ visibility: hidden; }}
 </style>
@@ -656,7 +669,7 @@ if st.session_state.pantalla in ["free", "pro"]:
         # Si es Pro, o si es Free pero lleva menos de 3, muestra la calculadora
         if not st.session_state.es_pro:
             restantes = 3 - st.session_state.calculos_free
-            st.caption(f"🎁 *Te quedan {restantes} cálculos de prueba gratis*")
+            st.markdown(f"<p style='color:#9BA8B5; font-size:0.85rem; margin-bottom: -5px;'>🎁 <i>Te quedan {restantes} cálculos de prueba gratis</i></p>", unsafe_allow_html=True)
 
         c1, c2 = st.columns(2)
         with c1:
@@ -668,7 +681,7 @@ if st.session_state.pantalla in ["free", "pro"]:
         with c2:
             afp = st.selectbox("🏦 AFP", options=obtener_afps())
 
-        st.caption(f"Monto ingresado: **{clp(liquido)}**")
+        st.markdown(f"<p style='color:#9BA8B5; font-size:0.82rem;'>Monto ingresado: <b>{clp(liquido)}</b></p>", unsafe_allow_html=True)
 
         if st.button("Calcular →", type="primary", use_container_width=True):
             # Sumamos 1 al contador si el usuario NO es pro
@@ -706,7 +719,7 @@ elif st.session_state.pantalla == "vista_previa":
     for i, (lbl, val) in enumerate(items):
         with [c1,c2,c3][i%3]:
             st.markdown(f'<div class="metric-card blurred"><div class="metric-label">{lbl}</div><div class="metric-value">{val}</div></div>', unsafe_allow_html=True)
-    st.caption("🔓 Desbloquea para ver tus números reales")
+    st.markdown("<p style='color:#9BA8B5; font-size:0.82rem; opacity: 0.8; margin-top:10px;'>🔓 Desbloquea para ver tus números reales</p>", unsafe_allow_html=True)
     st.divider()
     st.markdown('<span class="section-tag">¿Qué incluye el Pro?</span>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
