@@ -584,6 +584,7 @@ defs = {
     "pantalla": "free", "usuario_email": None, "usuario_nombre": None,
     "es_pro": False, "resultado": None, "codigo_validado": None,
     "mostrar_bienvenida": False, "es_primera_vez": False,
+    "calculos_free": 0,
 }
 for k, v in defs.items():
     if k not in st.session_state:
@@ -634,21 +635,47 @@ if st.session_state.pantalla in ["free", "pro"]:
         st.markdown(f'<div style="margin-bottom:12px"><span style="font-family:Syne,sans-serif;font-size:1.05rem;font-weight:700;color:{C_TEXT}">{st.session_state.usuario_nombre.split()[0]}</span><span class="pro-badge">PRO</span></div>', unsafe_allow_html=True)
 
     st.markdown('<span class="section-tag">Calculadora</span>', unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    with c1:
-        liquido = st.number_input(
-            "💵 Líquido que quiero recibir (CLP)",
-            min_value=10_000, max_value=50_000_000,
-            value=500_000, step=10_000, format="%d"
-        )
-    with c2:
-        afp = st.selectbox("🏦 AFP", options=obtener_afps())
 
-    # Mostrar monto formateado
-    st.caption(f"Monto ingresado: **{clp(liquido)}**")
+    # El Guardia de Seguridad (Muro de pago)
+    if not st.session_state.es_pro and st.session_state.calculos_free >= 3:
+        st.warning("🚨 **¡Límite de prueba alcanzado!** Has usado tus 3 cálculos gratuitos.")
+        st.info("Para seguir calculando sin límites, guardar tu historial y descargar reportes automáticos, actualízate a **PGH Pro**.")
+        
+        mensaje_limite = "¡Hola! Alcancé el límite gratis y quiero mi código PGH Pro 🚀"
+        link_limite = f"https://wa.me/56952222772?text={mensaje_limite.replace(' ', '%20')}"
+        
+        st.markdown(f'''
+            <a href="{link_limite}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; transition: opacity 0.2s; margin-top: 10px;">
+                👑 Desbloquear acceso sin límites
+            </a>
+        ''', unsafe_allow_html=True)
 
-    if st.button("Calcular →", type="primary", use_container_width=True):
-        st.session_state.resultado = calcular_sueldo_inverso(float(liquido), afp, valor_uf)
+    else:
+        # Si es Pro, o si es Free pero lleva menos de 3, muestra la calculadora
+        if not st.session_state.es_pro:
+            restantes = 3 - st.session_state.calculos_free
+            st.caption(f"🎁 *Te quedan {restantes} cálculos de prueba gratis*")
+
+        c1, c2 = st.columns(2)
+        with c1:
+            liquido = st.number_input(
+                "💵 Líquido que quiero recibir (CLP)",
+                min_value=10_000, max_value=50_000_000,
+                value=500_000, step=10_000, format="%d"
+            )
+        with c2:
+            afp = st.selectbox("🏦 AFP", options=obtener_afps())
+
+        st.caption(f"Monto ingresado: **{clp(liquido)}**")
+
+        if st.button("Calcular →", type="primary", use_container_width=True):
+            # Sumamos 1 al contador si el usuario NO es pro
+            if not st.session_state.es_pro:
+                st.session_state.calculos_free += 1
+            
+            # Hacemos el cálculo
+            st.session_state.resultado = calcular_sueldo_inverso(float(liquido), afp, valor_uf)
+            st.rerun() # Recarga la pantalla para actualizar el contador visual
 
 
 # ── FREE ──────────────────────────────────────────────────────────────────────
