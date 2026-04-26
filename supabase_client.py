@@ -5,6 +5,7 @@ Conexión con Supabase para PGH
 
 import streamlit as st
 from supabase import create_client, Client
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def get_client() -> Client:
     url = st.secrets["SUPABASE_URL"]
@@ -20,36 +21,53 @@ def verificar_codigo(codigo: str) -> bool:
 
 
 def activar_codigo(codigo: str, email: str, nombre: str, password: str) -> bool:
-    """Marca el código como usado y registra al usuario con contraseña."""
+    """Marca el código como usado y registra al usuario con contraseña encriptada."""
     supabase = get_client()
     try:
-        # Marcar código como usado
+        # 1. Encriptamos la contraseña antes de hacer cualquier otra cosa
+        password_encriptada = generate_password_hash(password)
+
+        # 2. Marcar código como usado
         supabase.table("codigos").update({
             "usado": True,
             "usuario_email": email,
             "fecha_activacion": str(__import__("datetime").date.today())
         }).eq("codigo", codigo).execute()
 
-        # Registrar o Actualizar usuario (Upsert) con contraseña
+        # 3. Registrar usuario guardando la versión segura de la contraseña
         supabase.table("usuarios").upsert({
             "email": email,
             "nombre": nombre,
-            "password": password,
+            "password": password_encriptada, 
             "fecha_registro": str(__import__("datetime").date.today()),
             "codigo_usado": codigo
         }, on_conflict="email").execute()
 
         return True
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error al activar: {e}")
         return False
 
 
 def validar_login(email: str, password: str) -> bool:
-    """Verifica si el email existe y la contraseña es correcta."""
+    """Verifica si el email existe y la contraseña coincide con el hash seguro."""
     supabase = get_client()
-    result = supabase.table("usuarios").select("*").eq("email", email).eq("password", password).execute()
-    return len(result.data) > 0
+    try:
+        # 1. Buscamos al usuario SOLO por su email para traer su contraseña encriptada
+        result = supabase.table("usuarios").select("password").eq("email", email).execute()
+        
+        # 2. Si el usuario existe, comparamos lo que escribió con lo que está guardado
+        if len(result.data) > 0:
+            hash_guardado = result.data[0]["password"]
+            
+            # check_password_hash desencripta de forma segura y devuelve True si coinciden
+            if check_password_hash(hash_guardado, password):
+                return True
+                
+        return False
+    except Exception as e:
+        print(f"Error al validar login: {e}")
+        return False
 
 
 def guardar_boleta(email: str, datos: dict) -> bool:
