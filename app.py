@@ -848,7 +848,7 @@ elif st.session_state.pantalla == "pro":
             mes_num = [k for k, v in meses_nombres.items() if v == mes_sel][0]
 
         # 3. Filtrar el DataFrame
-        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.year == anio_sel)] # Se sobreescribe 'df' para que el resto de tu código funcione igual
+        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.month == mes_num)] # Se sobreescribe 'df' para que el resto de tu código funcione igual
         
         # Filtrado final para la tabla
         boletas = df.to_dict('records') 
