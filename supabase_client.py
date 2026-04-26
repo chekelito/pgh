@@ -19,8 +19,8 @@ def verificar_codigo(codigo: str) -> bool:
     return len(result.data) > 0
 
 
-def activar_codigo(codigo: str, email: str, nombre: str) -> bool:
-    """Marca el código como usado y registra al usuario."""
+def activar_codigo(codigo: str, email: str, nombre: str, password: str) -> bool:
+    """Marca el código como usado y registra al usuario con contraseña."""
     supabase = get_client()
     try:
         # Marcar código como usado
@@ -30,23 +30,25 @@ def activar_codigo(codigo: str, email: str, nombre: str) -> bool:
             "fecha_activacion": str(__import__("datetime").date.today())
         }).eq("codigo", codigo).execute()
 
-        # Registrar usuario
-        supabase.table("usuarios").insert({
+        # Registrar o Actualizar usuario (Upsert) con contraseña
+        supabase.table("usuarios").upsert({
             "email": email,
             "nombre": nombre,
+            "password": password,
             "fecha_registro": str(__import__("datetime").date.today()),
             "codigo_usado": codigo
-        }).execute()
+        }, on_conflict="email").execute()
 
         return True
-    except Exception:
+    except Exception as e:
+        print(f"Error: {e}")
         return False
 
 
-def es_usuario_pro(email: str) -> bool:
-    """Verifica si el email tiene acceso Pro."""
+def validar_login(email: str, password: str) -> bool:
+    """Verifica si el email existe y la contraseña es correcta."""
     supabase = get_client()
-    result = supabase.table("usuarios").select("*").eq("email", email).execute()
+    result = supabase.table("usuarios").select("*").eq("email", email).eq("password", password).execute()
     return len(result.data) > 0
 
 
