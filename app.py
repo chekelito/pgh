@@ -669,7 +669,7 @@ if st.session_state.pantalla in ["free", "pro"]:
         # Si es Pro, o si es Free pero lleva menos de 3, muestra la calculadora
         if not st.session_state.es_pro:
             restantes = 3 - st.session_state.calculos_free
-            st.markdown(f"<p style='color:#9BA8B5; font-size:0.85rem; margin-bottom: -5px;'>🎁 <i>Te quedan {restantes} cálculos de prueba gratis</i></p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='color:#9BA8B5; font-size:0.85rem; margin-bottom: 15px;'>🎁 <i>Te quedan {restantes} cálculos de prueba gratis</i></p>", unsafe_allow_html=True)
 
         c1, c2 = st.columns(2)
         with c1:
