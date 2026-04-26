@@ -98,18 +98,18 @@ html, body, [class*="css"], [class*="st-"] {{
   margin-bottom: 6px !important;
 }}
 
-/* ── Selectbox (Estilo Botón Corregido) ── */
+/* ── Selectbox (Estilo Botón Final) ── */
 .stSelectbox > div > div {{
   background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%) !important;
   border: 1.5px solid rgba(28,163,158,0.5) !important;
-  border-radius: 16px !important; /* Curva un poco más suave para no morder el texto */
+  border-radius: 16px !important;
   color: #1a1040 !important;
   font-family: 'DM Sans', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 600 !important;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
   transition: all 0.2s ease !important;
-  /* Eliminamos el 'padding' que estaba asfixiando el texto */
+  cursor: pointer !important; /* <--- Fuerza la manito en la caja */
 }}
 
 /* Efecto al pasar el mouse por encima (Hover) */
@@ -119,9 +119,10 @@ html, body, [class*="css"], [class*="st-"] {{
   transform: translateY(-1px);
 }}
 
-/* Ocultar el indicador de escritura (caret) visualmente aunque siga ahí */
+/* Ocultar la rayita de escritura y forzar la manito sobre el texto */
 .stSelectbox input {{
   caret-color: transparent !important;
+  cursor: pointer !important; /* <--- Fuerza la manito sobre las letras */
 }}
 
 /* Dropdown options */
