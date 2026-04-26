@@ -888,7 +888,9 @@ elif st.session_state.pantalla == "pro":
                 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
                 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
             }
-            mes_sel = st.selectbox("🗓️ Mes", options=list(meses_nombres.values()))
+            # Calculamos el mes actual (1 a 12) y le restamos 1 porque las listas empiezan a contar desde 0
+            mes_actual = date.today().month
+            mes_sel = st.selectbox("🗓️ Mes", options=list(meses_nombres.values()), index=mes_actual - 1)
             # Convertir nombre de mes a número
             mes_num = [k for k, v in meses_nombres.items() if v == mes_sel][0]
 
@@ -1065,11 +1067,11 @@ elif st.session_state.pantalla == "pro":
         )
         st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
 
-    else:
+    elif not todas_las_boletas:
+        # Solo mostramos esto si la base de datos completa está vacía, para no duplicar el mensaje del mes.
         st.info("Aún no tienes boletas guardadas. Calcula y guarda tu primera boleta arriba. 👆")
 
     st.divider()
     st.markdown(disclaimer(), unsafe_allow_html=True)
-
 
 
