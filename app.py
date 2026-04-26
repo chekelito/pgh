@@ -880,6 +880,40 @@ elif st.session_state.pantalla == "login_directo":
 
 # ── PRO ───────────────────────────────────────────────────────────────────────
 elif st.session_state.pantalla == "pro":
+    # 1. Calculamos los días apenas intenta entrar a la pantalla Pro
+    dias_restantes = calcular_dias_restantes(st.session_state.usuario_email)
+
+    # 2. EL GUARDIA DE SEGURIDAD: Si no le quedan días, bloqueamos
+    if dias_restantes <= 0:
+        st.markdown(f'''
+            <div style="text-align:center; margin-top: 40px; margin-bottom: 24px;">
+                <div style="font-size:3.5rem; margin-bottom: 10px;">⏳</div>
+                <h2 style="font-family:'Syne',sans-serif; font-weight:800; color:{C_TEXT};">Tu suscripción expiró</h2>
+                <p style="color:{C_MUTED}; font-size:1rem; margin-top: 10px;">
+                    Tu mes de acceso a <b>PGH Pro</b> ha finalizado. Renueva ahora para recuperar tu historial guardado, seguir descargando reportes y calcular sin límites.
+                </p>
+            </div>
+        ''', unsafe_allow_html=True)
+
+        # Link de WhatsApp con mensaje pre-escrito
+        mensaje_renovacion = "¡Hola! Mi suscripción Pro de PGH expiró y quiero renovarla 🚀"
+        link_renovacion = f"https://wa.me/56952222772?text={mensaje_renovacion.replace(' ', '%20')}"
+
+        st.markdown(f'''
+            <a href="{link_renovacion}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: opacity 0.2s; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(28,163,158,0.2);">
+                📲 Renovar PGH PRO por WhatsApp
+            </a>
+        ''', unsafe_allow_html=True)
+
+        # Botón para volver a la versión gratis
+        if st.button("← Volver a la versión gratuita", use_container_width=True):
+            st.session_state.es_pro = False
+            st.session_state.pantalla = "free"
+            st.rerun()
+
+        # MAGIA: st.stop() detiene el código aquí mismo para que no vea nada más.
+        st.stop()
+        
     if st.session_state.mostrar_bienvenida:
         n = st.session_state.usuario_nombre.split()[0]
         if st.session_state.es_primera_vez:
