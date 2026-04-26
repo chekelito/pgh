@@ -645,7 +645,7 @@ if st.session_state.pantalla in ["free", "pro"]:
         link_limite = f"https://wa.me/56952222772?text={mensaje_limite.replace(' ', '%20')}"
         
         st.markdown(f'''
-            <a href="{link_limite}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; transition: opacity 0.2s; margin-top: 10px;">
+            <a href="{link_limite}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; transition: opacity 0.2s; margin-top: 10px; margin-bottom: 24px;">
                 👑 Desbloquear acceso sin límites
             </a>
         ''', unsafe_allow_html=True)
