@@ -631,6 +631,13 @@ def pdf_reporte(boletas, nombre):
     doc.build(story)
     return buf.getvalue()
 
+def conversion_excel(df_input):
+    """Convierte un DataFrame de pandas a un archivo Excel en memoria."""
+    output = io.BytesIO()
+    # Utilizamos el motor xlsxwriter que añadimos en el Paso 0
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df_input.to_excel(writer, index=False, sheet_name='Datos_PGH')
+    return output.getvalue()
 
 # ── Estado de sesión ──────────────────────────────────────────────────────────
 defs = {
@@ -970,27 +977,37 @@ elif st.session_state.pantalla == "pro":
         st.markdown(disclaimer(), unsafe_allow_html=True)
         # Botones guardar + PDF
         st.markdown("<br>", unsafe_allow_html=True)
-        cg, cp = st.columns(2)
-        with cg:
-            if st.button("💾 Guardar boleta", type="primary", use_container_width=True):
-                datos = {
+        # --- ACCIONES PRO (Guardar, PDF, Excel) ---
+        c_save, c_pdf, c_xls = st.columns(3)
+        with c_save:
+            if st.button("💾 Guardar", type="primary", use_container_width=True):
+                datos_b = {
                     "liquido": r["liquido_deseado"], "bruto": r["bruto"], "afp": r["afp"],
                     "retencion_sii": r["retencion_sii"], "base_imponible": r["base_imponible"],
                     "pago_salud": r["pago_salud"], "pago_afp": r["pago_afp"],
                     "pago_accidentes": r["pago_accidentes"], "total_cotizaciones": r["total_cotizaciones"],
                     "balance_renta": r["balance_renta"],
                 }
-                if guardar_boleta(st.session_state.usuario_email, datos):
-                    st.success("✅ Boleta guardada.")
+                if guardar_boleta(st.session_state.usuario_email, datos_b):
+                    st.success("¡Guardada!")
                     st.rerun()
-                else:
-                    st.error("Error al guardar.")
-        with cp:
+        with c_pdf:
             st.download_button(
-                label="📄 Descargar desglose PDF",
+                label="📄 PDF",
                 data=pdf_desglose(r, st.session_state.usuario_nombre, valor_uf),
                 file_name=f"PGH_desglose_{date.today().strftime('%d-%m-%Y')}.pdf",
                 mime="application/pdf",
+                use_container_width=True,
+            )
+        with c_xls:
+            # Creamos un pequeño Excel con los datos del cálculo actual
+            # Convertimos el diccionario 'r' en una lista para que Pandas lo lea bien
+            df_actual = pd.DataFrame([r])
+            st.download_button(
+                label="📊 Excel",
+                data=conversion_excel(df_actual),
+                file_name=f"PGH_desglose_{date.today().strftime('%d-%m-%Y')}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True,
             )
 
@@ -1070,14 +1087,35 @@ elif st.session_state.pantalla == "pro":
 
         # Botón reporte anual
         st.markdown("<br>", unsafe_allow_html=True)
-        st.download_button(
-            label="📊 Descargar reporte anual completo PDF",
-            data=pdf_reporte(boletas, st.session_state.usuario_nombre),
-            file_name=f"PGH_reporte_anual_{date.today().year}.pdf",
-            mime="application/pdf",
-            use_container_width=True,
-        )
-
+        # --- REPORTES ANUALES (PDF + EXCEL) ---
+        c_anual_pdf, c_anual_xls = st.columns(2)
+        
+        with c_anual_pdf:
+            st.download_button(
+                label="📑 Reporte Anual PDF",
+                data=pdf_reporte(boletas, st.session_state.usuario_nombre),
+                file_name=f"PGH_Reporte_{date.today().year}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+            )
+            
+        with c_anual_xls:
+            # Convertimos la lista de boletas filtradas a un DataFrame
+            df_anual = pd.DataFrame(boletas)
+            
+            # Limpieza: quitamos columnas técnicas de la base de datos que al usuario no le sirven
+            columnas_a_quitar = ['id', 'usuario_email', 'created_at']
+            for col in columnas_a_quitar:
+                if col in df_anual.columns:
+                    df_anual = df_anual.drop(columns=[col])
+            
+            st.download_button(
+                label="📈 Reporte Anual Excel",
+                data=conversion_excel(df_anual),
+                file_name=f"PGH_Reporte_{date.today().year}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
+            )
         # --- NUEVA SECCIÓN DE ELIMINAR (DIÁLOGO MODAL) ---
         st.markdown("<br>", unsafe_allow_html=True)
         
