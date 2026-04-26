@@ -16,8 +16,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
-from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta, obtener_todos_usuarios, renovar_suscripcion_usuario
-
+from supabase_client import verificar_codigo, activar_codigo, validar_login, guardar_boleta, obtener_boletas, eliminar_boleta, obtener_todos_usuarios, renovar_suscripcion_usuario
 # --- CONFIGURACIÓN DE PESTAÑA (LOGO COMPLETO PGH) ---
 favicon_svg = """
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 150'>
