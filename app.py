@@ -866,8 +866,11 @@ elif st.session_state.pantalla == "pro":
           bal = row["balance_renta"]
           color = "#00C853" if bal >= 0 else "#FF4B4B"
           icono = "🟢" if bal >= 0 else "🔴"
+          # Formateamos la fecha para que solo muestre Día/Mes/Año
+          fecha_limpia = row['fecha'].strftime("%d/%m/%Y") 
+          
           filas += f"""<tr>
-              <td>{row['fecha']}</td>
+              <td>{fecha_limpia}</td>
               <td>{clp(row['liquido'])}</td>
               <td>{clp(row['bruto'])}</td>
               <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
@@ -984,7 +987,7 @@ elif st.session_state.pantalla == "pro":
         fig2.add_trace(go.Scatter(
             x=ds["fecha_str"],
             y=ds["balance_acumulado"],
-            mode="lines+markers+text",
+            mode="lines+markers",
             line=dict(color=C_ACCENT2, width=3),
             marker=dict(color=C_ACCENT2, size=9, line=dict(color=C_BG, width=2)),
             fill="tozeroy",
