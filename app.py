@@ -632,11 +632,18 @@ def pdf_reporte(boletas, nombre):
     return buf.getvalue()
 
 def conversion_excel(df_input):
-    """Convierte un DataFrame de pandas a un archivo Excel en memoria."""
+    """Convierte un DataFrame a Excel quitando las horas de las fechas."""
+    # Hacemos una copia para no alterar los datos originales de la app
+    df_temp = df_input.copy()
+    
+    # Si existe la columna 'fecha', la transformamos a solo texto (DD-MM-YYYY)
+    if 'fecha' in df_temp.columns:
+        # Convertimos a datetime por si acaso y luego a formato limpio
+        df_temp['fecha'] = pd.to_datetime(df_temp['fecha']).dt.strftime('%d-%m-%Y')
+    
     output = io.BytesIO()
-    # Utilizamos el motor xlsxwriter que añadimos en el Paso 0
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df_input.to_excel(writer, index=False, sheet_name='Datos_PGH')
+        df_temp.to_excel(writer, index=False, sheet_name='Datos_PGH')
     return output.getvalue()
 
 # ── Estado de sesión ──────────────────────────────────────────────────────────
