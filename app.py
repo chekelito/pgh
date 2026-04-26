@@ -98,16 +98,31 @@ html, body, [class*="css"], [class*="st-"] {{
   margin-bottom: 6px !important;
 }}
 
-/* ── Selectbox ── */
-.stSelectbox > div > div {{
-  background: #FFFFFF !important;
-  border: 1.5px solid rgba(28,163,158,0.4) !important;
-  border-radius: 12px !important;
-  color: #111111 !important;
+/* ── Selectbox (Estilo Botón) ── */
+.stSelectbox > div > div {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%) !important;
+  border: 1.5px solid rgba(28,163,158,0.5) !important;
+  border-radius: 20px !important; /* Más curvo, parece botón */
+  color: #1a1040 !important; /* Azul oscuro corporativo */
   font-family: 'DM Sans', sans-serif !important;
   font-size: 1rem !important;
-  font-weight: 500 !important;
-}}
+  font-weight: 600 !important; /* Texto un poco más grueso */
+  padding: 4px 8px !important; /* Más relleno interno */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important; /* Sombra sutil */
+  transition: all 0.2s ease !important; /* Animación suave */
+}
+
+/* Efecto al pasar el mouse por encima (Hover) */
+.stSelectbox > div > div:hover {
+  border-color: #1ca39e !important; /* Borde turquesa fuerte */
+  box-shadow: 0 4px 8px rgba(28,163,158,0.15) !important; /* Sombra turquesa */
+  transform: translateY(-1px); /* Se levanta un poquito */
+}
+
+/* Ocultar el indicador de escritura (caret) visualmente aunque siga ahí */
+.stSelectbox input {
+  caret-color: transparent !important;
+}
 
 /* Dropdown options */
 [data-baseweb="popover"] li,
