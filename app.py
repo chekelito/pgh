@@ -109,17 +109,6 @@ html, body, [class*="css"], [class*="st-"] {{
   font-weight: 500 !important;
 }}
 
-/* Bloqueo extremo de teclado para TODOS los menús desplegables */
-.stSelectbox input {{
-  pointer-events: none !important;
-  caret-color: transparent !important;
-  display: none !important;
-}}
-
-.stSelectbox [data-baseweb="select"] {{
-  cursor: pointer !important;
-}}
-
 /* Dropdown options */
 [data-baseweb="popover"] li,
 [data-baseweb="menu"] li {{
