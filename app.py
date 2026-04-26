@@ -16,7 +16,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 from calculadora import calcular_sueldo_inverso, obtener_afps
-from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta
+from supabase_client import verificar_codigo, activar_codigo, es_usuario_pro, guardar_boleta, obtener_boletas, eliminar_boleta, obtener_todos_usuarios, renovar_suscripcion_usuario
 
 # --- CONFIGURACIÓN DE PESTAÑA (LOGO COMPLETO PGH) ---
 favicon_svg = """
@@ -1160,7 +1160,42 @@ elif st.session_state.pantalla == "pro":
     elif not todas_las_boletas:
         # Solo mostramos esto si la base de datos completa está vacía, para no duplicar el mensaje del mes.
         st.info("Aún no tienes boletas guardadas. Calcula y guarda tu primera boleta arriba. 👆")
-
+    
+    # ── PANEL DE ADMINISTRACIÓN (Solo visible para admin@gmail.com) ──
+    if st.session_state.usuario_email == "admin@gmail.com":
+        st.markdown('<br>', unsafe_allow_html=True)
+        st.markdown('<span class="section-tag" style="color:#FF4B4B">🔐 Centro de Control Admin</span>', unsafe_allow_html=True)
+        
+        # Usamos un expander para que no ocupe espacio visual si no lo estás usando
+        with st.expander("Gestionar Renovaciones de Usuarios"):
+            usuarios_lista = obtener_todos_usuarios()
+            if usuarios_lista:
+                for u in usuarios_lista:
+                    # No te listes a ti mismo para evitar errores
+                    if u['email'] == st.session_state.usuario_email:
+                        continue
+                    
+                    # Layout de 3 columnas para cada usuario
+                    c_info, c_estado, c_accion = st.columns([2, 1, 1])
+                    
+                    with c_info:
+                        st.markdown(f"**{u['nombre']}**<br><small>{u['email']}</small>", unsafe_allow_html=True)
+                    
+                    with c_estado:
+                        # Calculamos los días que le quedan a este usuario
+                        d = calcular_dias_restantes(u['email'])
+                        col_txt = "#00C853" if d > 0 else "#FF4B4B"
+                        st.markdown(f"<small style='color:{col_txt}'>{d} días rest.</small>", unsafe_allow_html=True)
+                    
+                    with c_accion:
+                        # Botón para renovar la suscripción
+                        if st.button("Renovar", key=f"ren_{u['email']}", use_container_width=True):
+                            if renovar_suscripcion_usuario(u['email']):
+                                st.success(f"¡{u['nombre']} renovado!")
+                                st.rerun()
+            else:
+                st.info("No hay otros usuarios registrados en el sistema.")
+    
     st.divider()
     st.markdown(disclaimer(), unsafe_allow_html=True)
 
