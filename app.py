@@ -641,15 +641,13 @@ if st.session_state.pantalla in ["free", "pro"]:
         st.warning("🚨 **¡Límite de prueba alcanzado!** Has usado tus 3 cálculos gratuitos.")
         st.info("Para seguir calculando sin límites, guardar tu historial y descargar reportes automáticos, actualízate a **PGH Pro**.")
         
-        mensaje_limite = "¡Hola! Alcancé el límite gratis y quiero mi código PGH Pro 🚀"
-        link_limite = f"https://wa.me/56952222772?text={mensaje_limite.replace(' ', '%20')}"
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        st.markdown(f'''
-            <a href="{link_limite}" target="_blank" style="display: block; text-align: center; background: linear-gradient(135deg, {C_ACCENT2}, {C_ACCENT1}); color: white; padding: 14px 24px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; text-decoration: none; transition: opacity 0.2s; margin-top: 10px; margin-bottom: 24px;">
-                👑 Desbloquear acceso sin límites
-            </a>
-        ''', unsafe_allow_html=True)
-
+        if st.button("👑 Desbloquear acceso sin límites", type="primary", use_container_width=True):
+            st.session_state.pantalla = "compra"
+            st.rerun()
+            
+        st.markdown("<div style='margin-bottom: 24px;'></div>", unsafe_allow_html=True)
     else:
         # Si es Pro, o si es Free pero lleva menos de 3, muestra la calculadora
         if not st.session_state.es_pro:
