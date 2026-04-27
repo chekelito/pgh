@@ -717,7 +717,7 @@ with c_der:
     if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
 
-# --- 1. FUNCIÓN DE LA VENTANA (Debe ir antes del botón) ---
+# --- 1. FUNCIÓN DE LA VENTANA ---
 @st.dialog("📲 Instalar PGH App")
 def modal_instalacion():
     st.markdown(f"""
@@ -733,7 +733,7 @@ def modal_instalacion():
     </div>
     """, unsafe_allow_html=True)
 
-# --- 2. FILA DE INFORMACIÓN (UF izquierda, APP derecha alineada) ---
+# --- 2. FILA DE INFORMACIÓN (UF + BOTÓN APP) ---
 c_izq, c_der = st.columns([3, 1]) 
 
 with c_izq:
@@ -756,7 +756,6 @@ with c_der:
         </style>
     """, unsafe_allow_html=True)
     
-    # Al estar use_container_width=True, chocará exactamente con el margen derecho
     if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
 
