@@ -690,32 +690,45 @@ with c3:
             st.rerun()
 
 # --- FILA DE INFORMACIÓN (UF + BOTÓN APP) ---
-c_uf, c_install = st.columns([1, 1])
+# Usamos una columna vacía al final (c_spacer) para empujar todo a la izquierda
+c_uf, c_install, c_spacer = st.columns([0.45, 0.45, 1.1])
 
 with c_uf:
     st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
 
 with c_install:
-    # CSS para que el botón sea una píldora pequeña y elegante
-    st.markdown("""
+    # CSS para que el botón sea una píldora idéntica a la de la UF
+    st.markdown(f"""
         <style>
-        div[data-testid="stColumn"]:nth-of-type(2) button {
-            padding: 2px 10px !important;
+        /* Alineamos el botón verticalmente con la UF */
+        div[data-testid="stColumn"]:nth-of-type(2) button {{
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(28, 163, 158, 0.3) !important;
+            border-radius: 50px !important;
+            color: #1CA39E !important;
+            padding: 0px 12px !important;
+            height: 32px !important; /* Misma altura que tu uf-pill */
             font-size: 0.75rem !important;
-            border-radius: 20px !important;
-            height: 28px !important;
-            min-height: 28px !important;
-            border: 1px solid rgba(28,163,158,0.4) !important;
-            background: rgba(255,255,255,0.03) !important;
-            color: white !important;
-        }
+            font-weight: 600 !important;
+            margin-top: 2px !important; 
+            transition: all 0.3s ease !important;
+        }}
+        
+        div[data-testid="stColumn"]:nth-of-type(2) button:hover {{
+            border-color: #1CA39E !important;
+            background-color: rgba(28, 163, 158, 0.1) !important;
+        }}
+
+        /* Quitamos el espacio extra que Streamlit pone entre columnas en móvil */
+        [data-testid="column"] {{
+            width: fit-content !important;
+            min-width: unset !important;
+        }}
         </style>
     """, unsafe_allow_html=True)
     
-    if st.button("📲 Instalar App", use_container_width=False):
+    if st.button("📲 Instalar App"):
         modal_instalacion()
-
-st.divider()
 
 # --- FUNCIÓN DE VENTANA EMERGENTE ---
 @st.dialog("📲 Instalar PGH App")
