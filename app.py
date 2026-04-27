@@ -671,19 +671,19 @@ valor_uf = obtener_uf()
 
 # ── HEADER ────────────────────────────────────────────────────────────────────
 c1, c3 = st.columns([4, 1])
-# --- AJUSTE POSICIÓN SUPERIOR ---
+# --- AJUSTE POSICIÓN SUPERIOR (Mantenemos lo de subir la app) ---
 st.markdown("""
     <style>
         .block-container {
-            padding-top: 1rem !important;
+            padding-top: 1.2rem !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
 with c1:
     st.markdown(f"""
-    <div style="display:flex; align-items:center; gap:18px; padding:0;">
-        <svg width="52" height="62" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:-5px">
+    <div style="display:flex; align-items:center; gap:14px; padding:0;">
+        <svg width="45" height="52" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:-2px">
             <defs>
                 <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="{C_ACCENT2}"/>
@@ -699,8 +699,8 @@ with c1:
             <circle cx="71" cy="20" r="3" fill="url(#dg)"/>
         </svg>
         <div>
-            <div style="font-family:'Syne',sans-serif; font-size:2.1rem; font-weight:800; background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.1;">PGH</div>
-            <div style="font-size:0.75rem; color:{C_MUTED}; letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; font-weight:500;">Plataforma de Gestión de Honorarios</div>
+            <div style="font-family:'Syne',sans-serif; font-size:1.45rem; font-weight:800; background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.2;">PGH</div>
+            <div style="font-size:0.68rem; color:{C_MUTED}; letter-spacing:1.2px; text-transform:uppercase; margin-top:1px; font-weight:500;">Plataforma de Gestión de Honorarios</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
