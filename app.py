@@ -693,37 +693,38 @@ st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="w
 
 st.divider()
 
-# --- PASO 3: GUÍA DE INSTALACIÓN (VERSIÓN LIMPIA) ---
+# --- PASO 3: FUNCIÓN DE VENTANA EMERGENTE (MODAL) ---
+@st.dialog("📲 Instalar PGH App")
+def modal_instalacion():
+    st.markdown(f"""
+    <div style="font-size: 0.95rem; color: {C_TEXT}; line-height: 1.6;">
+        <p>Para llevar <b>PGH</b> en tu pantalla de inicio como una aplicación real, sigue estos pasos según tu equipo:</p>
+        <hr style="border-color: rgba(28,163,158,0.2)">
+        <p><b>En Android (Chrome) 🤖:</b><br>
+        1. Toca los tres puntos (⋮) en la esquina superior.<br>
+        2. Selecciona <b>'Instalar aplicación'</b> o 'Agregar a la pantalla de inicio'.</p>
+        
+        <p><b>En iPhone (Safari) 🍎:</b><br>
+        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha hacia arriba).<br>
+        2. Desliza hacia abajo y elige <b>'Agregar al inicio'</b>.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- BOTÓN EN LA BARRA LATERAL ---
 with st.sidebar:
     st.markdown(f"""
     <style>
-        /* Bajamos el contenido para que no choque con los botones de Streamlit */
-        [data-testid="stSidebarContent"] {{
-            padding-top: 4rem !important;
-        }}
-        /* Ponemos la barra lateral del mismo color oscuro que tu app */
-        [data-testid="stSidebar"] {{
-            background-color: {C_BG} !important;
-            border-right: 1px solid rgba(28,163,158,0.1);
-        }}
-        /* Estilo para el botón de instalar */
-        [data-testid="stExpander"] {{
-            border: 1px solid rgba(28,163,158,0.2) !important;
-            border-radius: 12px !important;
-            background: rgba(255,255,255,0.03) !important;
-        }}
+        [data-testid="stSidebarContent"] {{ padding-top: 4rem !important; }}
+        [data-testid="stSidebar"] {{ background-color: {C_BG} !important; }}
     </style>
     """, unsafe_allow_html=True)
-
-    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_ACCENT2}; font-size:1.1rem; margin-top:10px;">PGH App 📱</div>', unsafe_allow_html=True)
     
-    with st.expander("Instalar App"): 
-        st.markdown(f"""
-        <div style="font-size: 0.85rem; color: {C_MUTED}; line-height: 1.4;">
-        <b>Android:</b> Tres puntos (⋮) → Instalar.<br><br>
-        <b>iPhone:</b> Compartir → Agregar al inicio.
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_TEXT}; font-size:1.1rem; margin-top:10px;">PGH App 📱</div>', unsafe_allow_html=True)
+    
+    # El botón que activa la ventana central
+    if st.button("Configurar como App 🚀", use_container_width=True):
+        modal_instalacion()
+    
     st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
