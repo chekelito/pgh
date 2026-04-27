@@ -671,21 +671,12 @@ valor_uf = obtener_uf()
 
 # ── HEADER ────────────────────────────────────────────────────────────────────
 c1, c3 = st.columns([4, 1])
-# --- SUBIR CABECERA Y ELIMINAR ESPACIO SUPERIOR ---
-st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 1.5rem !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 with c1:
-    st.markdown(f"""<div style="display:flex;align-items:center;gap:16px;padding:4px 0">
-    <svg width="48" height="56" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:-3px"><defs><linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="{C_ACCENT2}"/><stop offset="100%" stop-color="{C_ACCENT1}"/></linearGradient></defs><rect width="100" height="150" rx="15" fill="none" stroke="url(#dg)" stroke-width="6"/><rect x="25" y="80" width="12" height="40" rx="4" fill="url(#dg)"/><rect x="45" y="60" width="12" height="60" rx="4" fill="url(#dg)"/><rect x="65" y="30" width="12" height="90" rx="4" fill="url(#dg)"/><circle cx="31" cy="70" r="3" fill="url(#dg)"/><circle cx="51" cy="50" r="3" fill="url(#dg)"/><circle cx="71" cy="20" r="3" fill="url(#dg)"/></svg>
+    st.markdown(f"""<div style="display:flex;align-items:center;gap:12px;padding:4px 0">
+    <svg width="36" height="42" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:-3px"><defs><linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#09456C"/><stop offset="100%" style="stop-color:#23145B"/></linearGradient></defs><rect x="2" y="2" width="106" height="136" rx="12" fill="url(#dg)" stroke="#1CA39E" stroke-width="4"/><text x="29" y="82" font-family="sans-serif" font-size="13" font-weight="800" fill="#1CA39E" opacity="0.7" text-anchor="middle">P</text><text x="55" y="64" font-family="sans-serif" font-size="13" font-weight="800" fill="#1CA39E" opacity="0.85" text-anchor="middle">G</text><text x="81" y="46" font-family="sans-serif" font-size="13" font-weight="800" fill="#1CA39E" text-anchor="middle">H</text><rect x="20" y="86" width="18" height="32" rx="3" fill="#1CA39E" opacity="0.4"/><rect x="45" y="68" width="18" height="50" rx="3" fill="#1CA39E" opacity="0.7"/><rect x="70" y="50" width="18" height="68" rx="3" fill="#1CA39E" opacity="1"/><line x1="16" y1="121" x2="92" y2="121" stroke="#1CA39E" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
     <div>
-    <div style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1});-webkit-background-clip:text;-webkit-text-fill-color:transparent">PGH</div>
-    <div style="font-size:0.7rem;color:{C_MUTED};letter-spacing:1.5px;text-transform:uppercase;margin-top:2px">Plataforma de Gestión de Honorarios</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1});-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2">PGH</div>
+      <div style="font-size:0.55rem;color:{C_MUTED};letter-spacing:1.5px;text-transform:uppercase;margin-top:1px">Plataforma de Gestión de Honorarios</div>
     </div></div>""", unsafe_allow_html=True)
 with c3:
     if st.session_state.es_pro:
