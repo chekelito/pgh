@@ -671,7 +671,7 @@ valor_uf = obtener_uf()
 
 # ── HEADER ────────────────────────────────────────────────────────────────────
 c1, c3 = st.columns([4, 1])
-# --- AJUSTE POSICIÓN SUPERIOR (Mantenemos lo de subir la app) ---
+# --- AJUSTE POSICIÓN SUPERIOR ---
 st.markdown("""
     <style>
         .block-container {
@@ -690,13 +690,15 @@ with c1:
                     <stop offset="100%" stop-color="{C_ACCENT1}"/>
                 </linearGradient>
             </defs>
-            <rect width="100" height="150" rx="15" fill="none" stroke="url(#dg)" stroke-width="6"/>
+            <rect width="100" height="150" rx="15" fill="rgba(28,163,158,0.1)" stroke="url(#dg)" stroke-width="6"/>
+            
             <rect x="25" y="80" width="12" height="40" rx="4" fill="url(#dg)"/>
             <rect x="45" y="60" width="12" height="60" rx="4" fill="url(#dg)"/>
             <rect x="65" y="30" width="12" height="90" rx="4" fill="url(#dg)"/>
-            <circle cx="31" cy="70" r="3" fill="url(#dg)"/>
-            <circle cx="51" cy="50" r="3" fill="url(#dg)"/>
-            <circle cx="71" cy="20" r="3" fill="url(#dg)"/>
+            
+            <text x="31" y="72" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">P</text>
+            <text x="51" y="52" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">G</text>
+            <text x="71" y="22" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">H</text>
         </svg>
         <div>
             <div style="font-family:'Syne',sans-serif; font-size:1.45rem; font-weight:800; background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.2;">PGH</div>
