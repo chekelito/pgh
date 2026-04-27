@@ -455,15 +455,15 @@ footer {{ visibility: hidden; }}
 """, unsafe_allow_html=True)
 
 # --- CONFIGURACIÓN PWA (IDENTIDAD DE APP) ---
-    st.markdown(f"""
+st.markdown(f"""
         <head>
-            <link rel="manifest" href="https://raw.githubusercontent.com/TU_USUARIO/pgh/main/manifest.json">
+            <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
             <meta name="theme-color" content="#1CA39E">
-            <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/TU_USUARIO/pgh/main/logo_pgh.jpg">
+            <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         </head>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 @st.cache_data(ttl=3600)
 def obtener_uf():
