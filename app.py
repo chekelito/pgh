@@ -717,7 +717,7 @@ with c_der:
     if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
 
-# --- FUNCIÓN DE VENTANA EMERGENTE ---
+# --- 1. FUNCIÓN DE LA VENTANA (Debe ir antes del botón) ---
 @st.dialog("📲 Instalar PGH App")
 def modal_instalacion():
     st.markdown(f"""
@@ -732,6 +732,33 @@ def modal_instalacion():
         2. Elige <b>'Instalar aplicación'</b>.</p>
     </div>
     """, unsafe_allow_html=True)
+
+# --- 2. FILA DE INFORMACIÓN (UF izquierda, APP derecha alineada) ---
+c_izq, c_der = st.columns([3, 1]) 
+
+with c_izq:
+    st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
+
+with c_der:
+    st.markdown(f"""
+        <style>
+        div[data-testid="stColumn"]:nth-of-type(2) button {{
+            background-color: transparent !important;
+            border: 1px solid rgba(28, 163, 158, 0.4) !important;
+            border-radius: 20px !important;
+            color: #1CA39E !important;
+            transition: all 0.3s ease !important;
+        }}
+        div[data-testid="stColumn"]:nth-of-type(2) button:hover {{
+            border-color: #1CA39E !important;
+            background-color: rgba(28, 163, 158, 0.1) !important;
+        }}
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Al estar use_container_width=True, chocará exactamente con el margen derecho
+    if st.button("📲 Instalar App", use_container_width=True):
+        modal_instalacion()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
 if st.session_state.pantalla in ["free", "pro"]:
