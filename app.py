@@ -454,19 +454,15 @@ footer {{ visibility: hidden; }}
 </style>
 """, unsafe_allow_html=True)
 
-# --- CONFIGURACIÓN PWA (COMPATIBILIDAD TOTAL) ---
+# --- CONFIGURACIÓN PWA (IDENTIDAD INVISIBLE) ---
 st.markdown(f"""
-    <head>
-        <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
-        <meta name="theme-color" content="#1CA39E">
-        <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg">
-        
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-title" content="PGH">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        
-        <meta name="mobile-web-app-capable" content="yes">
-    </head>
+    <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
+    <meta name="theme-color" content="#1CA39E">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="PGH">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
 """, unsafe_allow_html=True)
 
 @st.cache_data(ttl=3600)
