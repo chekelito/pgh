@@ -8,7 +8,7 @@
   "theme_color": "#1CA39E",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/chekelito/pgh/main/logo_final_180x.png",
+      "src": "https://raw.githubusercontent.com/chekelito/pgh/main/logo_final_180x.png?v=2",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
