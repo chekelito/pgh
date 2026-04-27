@@ -669,9 +669,7 @@ for k, v in defs.items():
 
 valor_uf = obtener_uf()
 
-# ── HEADER ────────────────────────────────────────────────────────────────────
-c1, c3 = st.columns([4, 1])
-# --- AJUSTE POSICIÓN SUPERIOR ---
+# --- HEADER (LOGOTIPO + BOTÓN INGRESAR) ---
 st.markdown("""
     <style>
         .block-container {
@@ -680,34 +678,37 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+c1, c3 = st.columns([4, 1])
+
 with c1:
     st.markdown(f"""
     <div style="display:flex; align-items:center; gap:14px; padding:0;">
-        <svg width="45" height="52" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0; margin-top:-2px">
+        <svg width="45" height="52" viewBox="0 -5 110 160" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
             <defs>
                 <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="{C_ACCENT2}"/>
                     <stop offset="100%" stop-color="{C_ACCENT1}"/>
                 </linearGradient>
             </defs>
-            <rect width="100" height="150" rx="15" fill="rgba(28,163,158,0.1)" stroke="url(#dg)" stroke-width="6"/>
+            <rect width="100" height="150" rx="15" fill="rgba(28,163,158,0.08)" stroke="url(#dg)" stroke-width="6"/>
             
             <rect x="25" y="80" width="12" height="40" rx="4" fill="url(#dg)"/>
             <rect x="45" y="60" width="12" height="60" rx="4" fill="url(#dg)"/>
             <rect x="65" y="30" width="12" height="90" rx="4" fill="url(#dg)"/>
             
-            <text x="31" y="72" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">P</text>
-            <text x="51" y="52" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">G</text>
-            <text x="71" y="22" font-family="Arial" font-size="14" font-weight="bold" fill="url(#dg)" text-anchor="middle">H</text>
+            <text x="31" y="72" font-family="Arial" font-size="14" font-weight="bold" fill="{C_ACCENT2}" text-anchor="middle">P</text>
+            <text x="51" y="52" font-family="Arial" font-size="14" font-weight="bold" fill="{C_ACCENT2}" text-anchor="middle">G</text>
+            <text x="71" y="22" font-family="Arial" font-size="14" font-weight="bold" fill="{C_ACCENT2}" text-anchor="middle">H</text>
         </svg>
-        <div>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
             <div style="font-family:'Syne',sans-serif; font-size:1.45rem; font-weight:800; background:linear-gradient(135deg,{C_ACCENT2},{C_ACCENT1}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1.2;">PGH</div>
             <div style="font-size:0.68rem; color:{C_MUTED}; letter-spacing:1.2px; text-transform:uppercase; margin-top:1px; font-weight:500;">Plataforma de Gestión de Honorarios</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 with c3:
-    if st.session_state.es_pro:
+    if st.session_state.get('es_pro', False):
         if st.button("Salir", use_container_width=True):
             for k, v in defs.items():
                 st.session_state[k] = v
