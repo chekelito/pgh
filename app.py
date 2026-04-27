@@ -689,45 +689,47 @@ with c3:
             st.session_state.pantalla = "login_directo"
             st.rerun()
 
-# --- FILA DE INFORMACIÓN (UF + BOTÓN APP) ---
-# Usamos una columna vacía al final (c_spacer) para empujar todo a la izquierda
-c_uf, c_install, c_spacer = st.columns([0.45, 0.45, 1.1])
+# --- FILA DE INFORMACIÓN (UF a la izquierda, APP a la derecha) ---
+# Usamos las mismas proporciones que tenga tu cabecera (ejemplo 2:1 o similar)
+c_left, c_right = st.columns([2, 1]) 
 
-with c_uf:
+with c_left:
+    # Mantenemos tu UF pill original
     st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
 
-with c_install:
-    # CSS para que el botón sea una píldora idéntica a la de la UF
+with c_right:
+    # CSS para que el botón sea idéntico al de 'Ingresar' y se alinee a la derecha
     st.markdown(f"""
         <style>
-        /* Alineamos el botón verticalmente con la UF */
-        div[data-testid="stColumn"]:nth-of-type(2) button {{
-            background-color: rgba(255, 255, 255, 0.03) !important;
-            border: 1px solid rgba(28, 163, 158, 0.3) !important;
-            border-radius: 50px !important;
-            color: #1CA39E !important;
-            padding: 0px 12px !important;
-            height: 32px !important; /* Misma altura que tu uf-pill */
-            font-size: 0.75rem !important;
-            font-weight: 600 !important;
-            margin-top: 2px !important; 
-            transition: all 0.3s ease !important;
+        /* Contenedor para alinear el botón a la derecha de la columna */
+        div[data-testid="stColumn"]:nth-of-type(2) {{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
         }}
-        
+
+        /* Estilo del botón para clonar el botón 'Ingresar' */
+        div[data-testid="stColumn"]:nth-of-type(2) button {{
+            background-color: transparent !important;
+            border: 1px solid rgba(28, 163, 158, 0.5) !important;
+            border-radius: 20px !important;
+            color: #1CA39E !important;
+            padding: 4px 20px !important;
+            height: 38px !important;
+            font-size: 0.9rem !important;
+            transition: all 0.3s ease !important;
+            width: auto !important;
+        }}
+
         div[data-testid="stColumn"]:nth-of-type(2) button:hover {{
             border-color: #1CA39E !important;
             background-color: rgba(28, 163, 158, 0.1) !important;
-        }}
-
-        /* Quitamos el espacio extra que Streamlit pone entre columnas en móvil */
-        [data-testid="column"] {{
-            width: fit-content !important;
-            min-width: unset !important;
+            box-shadow: 0 0 10px rgba(28, 163, 158, 0.2);
         }}
         </style>
     """, unsafe_allow_html=True)
     
-    if st.button("📲 Instalar App"):
+    if st.button("📲 Instalar App", use_container_width=False):
         modal_instalacion()
 
 # --- FUNCIÓN DE VENTANA EMERGENTE ---
