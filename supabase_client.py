@@ -45,7 +45,6 @@ def activar_codigo(codigo: str, email: str, nombre: str, password: str) -> bool:
 
         return True
     except Exception as e:
-        st.error(f"Error exacto de Supabase: {e}")
         print(f"Error al activar: {e}")
         return False
 
