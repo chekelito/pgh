@@ -689,31 +689,49 @@ with c3:
             st.session_state.pantalla = "login_directo"
             st.rerun()
 
-st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
+# --- FILA DE INFORMACIÓN (UF + BOTÓN APP) ---
+c_uf, c_install = st.columns([1, 1])
+
+with c_uf:
+    st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
+
+with c_install:
+    # CSS para que el botón sea una píldora pequeña y elegante
+    st.markdown("""
+        <style>
+        div[data-testid="stColumn"]:nth-of-type(2) button {
+            padding: 2px 10px !important;
+            font-size: 0.75rem !important;
+            border-radius: 20px !important;
+            height: 28px !important;
+            min-height: 28px !important;
+            border: 1px solid rgba(28,163,158,0.4) !important;
+            background: rgba(255,255,255,0.03) !important;
+            color: white !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    if st.button("📲 Instalar App", use_container_width=False):
+        modal_instalacion()
 
 st.divider()
 
-# --- PASO 3: FUNCIÓN DE VENTANA EMERGENTE (MODAL) ---
+# --- FUNCIÓN DE VENTANA EMERGENTE ---
 @st.dialog("📲 Instalar PGH App")
 def modal_instalacion():
     st.markdown(f"""
     <div style="font-size: 0.95rem; color: {C_TEXT}; line-height: 1.6;">
-        <p>Para usar <b>PGH</b> como una aplicación en tu pantalla de inicio, sigue estos pasos:</p>
+        <p>Para llevar <b>PGH</b> en tu celular como una App real:</p>
         <hr style="border-color: rgba(28,163,158,0.2)">
-        <p><b>En iPhone (Safari) 🍎:</b><br>
-        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha ↑ abajo).<br>
-        2. Selecciona <b>'Agregar a la pantalla de inicio'</b>.</p>
-        <p><b>En Android (Chrome) 🤖:</b><br>
-        1. Toca los tres puntos (⋮) → <b>'Instalar aplicación'</b>.</p>
+        <p><b>iPhone (Safari) 🍎:</b><br>
+        1. Toca <b>Compartir</b> (el cuadrado con la flecha ↑ abajo).<br>
+        2. Elige <b>'Agregar a la pantalla de inicio'</b>.</p>
+        <p><b>Android (Chrome) 🤖:</b><br>
+        1. Toca los tres puntos (⋮) arriba.<br>
+        2. Elige <b>'Instalar aplicación'</b>.</p>
     </div>
     """, unsafe_allow_html=True)
-
-# --- BOTÓN DE INSTALACIÓN EN PANTALLA PRINCIPAL ---
-c1, c2 = st.columns([1.2, 1]) # Creamos columnas para que el botón no sea gigante
-with c1:
-    if st.button("✨ Instalar PGH en mi celular", use_container_width=True):
-        modal_instalacion()
-st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
 if st.session_state.pantalla in ["free", "pro"]:
