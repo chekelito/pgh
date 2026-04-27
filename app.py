@@ -458,7 +458,7 @@ footer {{ visibility: hidden; }}
 st.markdown(f"""
     <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
     <meta name="theme-color" content="#1CA39E">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_final_180x.png?v=1">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_final_180x.png?v=2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="PGH">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
