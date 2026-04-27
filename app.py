@@ -698,30 +698,49 @@ st.divider()
 def modal_instalacion():
     st.markdown(f"""
     <div style="font-size: 0.95rem; color: {C_TEXT}; line-height: 1.6;">
-        <p>Para usar <b>PGH</b> como una aplicación en tu pantalla de inicio, sigue estos pasos según tu equipo:</p>
+        <p>En iPhone, Apple exige un paso manual. Sigue estas instrucciones para dejar <b>PGH</b> en tu pantalla de inicio:</p>
         <hr style="border-color: rgba(28,163,158,0.2)">
-        
         <p><b>En iPhone (Safari) 🍎:</b><br>
-        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha hacia arriba <span style='font-size:1.2rem;'>↑</span> en la barra de abajo).<br>
-        2. Baja en el menú y selecciona <b>'Agregar a la pantalla de inicio'</b>.<br>
-        3. Toca <b>'Agregar'</b> arriba a la derecha.</p>
-        
+        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha ↑ abajo).<br>
+        2. Selecciona <b>'Agregar a la pantalla de inicio'</b>.</p>
         <p><b>En Android (Chrome) 🤖:</b><br>
-        1. Toca los tres puntos (⋮) arriba a la derecha.<br>
-        2. Selecciona <b>'Instalar aplicación'</b> o 'Agregar a inicio'.</p>
+        1. Toca los tres puntos (⋮) → <b>'Instalar aplicación'</b>.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# --- BOTÓN EN LA BARRA LATERAL ---
+# --- BOTÓN EN LA BARRA LATERAL (VERSIÓN LIMPIA) ---
 with st.sidebar:
     st.markdown(f"""
     <style>
-        [data-testid="stSidebarContent"] {{ padding-top: 4rem !important; }}
-        [data-testid="stSidebar"] {{ background-color: {C_BG} !important; }}
+        /* Eliminamos el texto 'keyboard_double' y botones de sistema */
+        [data-testid="collapsedControl"], 
+        [data-testid="stSidebarNavSeparator"],
+        button[kind="header"] {{
+            display: none !important;
+        }}
+        
+        /* Ajustamos el espacio superior */
+        [data-testid="stSidebarContent"] {{
+            padding-top: 1.5rem !important;
+        }}
+
+        /* Sincronizamos el fondo oscuro */
+        [data-testid="stSidebar"] {{
+            background-color: {C_BG} !important;
+            border-right: 1px solid rgba(28,163,158,0.1);
+        }}
+
+        /* Estilo premium para el botón */
+        .stButton>button {{
+            border-radius: 12px !important;
+            border: 1px solid {C_ACCENT2} !important;
+            background-color: rgba(255,255,255,0.03) !important;
+            transition: all 0.3s ease;
+        }}
     </style>
     """, unsafe_allow_html=True)
     
-    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_TEXT}; font-size:1.1rem; margin-top:10px;">PGH App 📱</div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_TEXT}; font-size:1.1rem; margin-top:10px; margin-bottom:10px;">PGH App 📱</div>', unsafe_allow_html=True)
     
     if st.button("Configurar como App 🚀", use_container_width=True):
         modal_instalacion()
