@@ -690,46 +690,31 @@ with c3:
             st.rerun()
 
 # --- FILA DE INFORMACIÓN (UF a la izquierda, APP a la derecha) ---
-# Usamos las mismas proporciones que tenga tu cabecera (ejemplo 2:1 o similar)
-c_left, c_right = st.columns([2, 1]) 
+c_izq, c_der = st.columns([3, 1]) 
 
-with c_left:
-    # Mantenemos tu UF pill original
+with c_izq:
     st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
 
-with c_right:
-    # CSS para que el botón sea idéntico al de 'Ingresar' y se alinee a la derecha
+with c_der:
+    # Quitamos los tamaños fijos para que copie las medidas de 'Ingresar'
     st.markdown(f"""
         <style>
-        /* Contenedor para alinear el botón a la derecha de la columna */
-        div[data-testid="stColumn"]:nth-of-type(2) {{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }}
-
-        /* Estilo del botón para clonar el botón 'Ingresar' */
         div[data-testid="stColumn"]:nth-of-type(2) button {{
             background-color: transparent !important;
-            border: 1px solid rgba(28, 163, 158, 0.5) !important;
+            border: 1px solid rgba(28, 163, 158, 0.4) !important;
             border-radius: 20px !important;
             color: #1CA39E !important;
-            padding: 4px 20px !important;
-            height: 38px !important;
-            font-size: 0.9rem !important;
             transition: all 0.3s ease !important;
-            width: auto !important;
         }}
-
         div[data-testid="stColumn"]:nth-of-type(2) button:hover {{
             border-color: #1CA39E !important;
             background-color: rgba(28, 163, 158, 0.1) !important;
-            box-shadow: 0 0 10px rgba(28, 163, 158, 0.2);
         }}
         </style>
     """, unsafe_allow_html=True)
     
-    if st.button("📲 Instalar App", use_container_width=False):
+    # Este True es el que fuerza a que toque la pared derecha
+    if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
 
 # --- FUNCIÓN DE VENTANA EMERGENTE ---
