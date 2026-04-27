@@ -689,8 +689,6 @@ with c3:
             st.session_state.pantalla = "login_directo"
             st.rerun()
 
-st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
-
 st.divider()
 
 # --- 1. FUNCIÓN DE LA VENTANA ---
