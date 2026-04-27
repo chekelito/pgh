@@ -1,0 +1,16 @@
+{
+  "name": "PGH · Gestión de Honorarios",
+  "short_name": "PGH",
+  "description": "Plataforma de Gestión de Honorarios Chile",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#160D18",
+  "theme_color": "#1CA39E",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
