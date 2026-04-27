@@ -454,6 +454,16 @@ footer {{ visibility: hidden; }}
 </style>
 """, unsafe_allow_html=True)
 
+# --- CONFIGURACIÓN PWA (IDENTIDAD DE APP) ---
+    st.markdown(f"""
+        <head>
+            <link rel="manifest" href="https://raw.githubusercontent.com/TU_USUARIO/pgh/main/manifest.json">
+            <meta name="theme-color" content="#1CA39E">
+            <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/TU_USUARIO/pgh/main/logo_pgh.jpg">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        </head>
+    """, unsafe_allow_html=True)
 
 @st.cache_data(ttl=3600)
 def obtener_uf():
@@ -682,6 +692,21 @@ with c3:
 st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
 
 st.divider()
+
+# --- PASO 3: GUÍA DE INSTALACIÓN ---
+with st.sidebar:
+    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_ACCENT2}; font-size:1.2rem; margin-bottom:10px;">PGH App 📱</div>', unsafe_allow_html=True)
+    with st.expander("¿Cómo instalar en mi celular?"):
+        st.markdown("""
+        **Para Android (Chrome):**
+        1. Toca los **tres puntos (⋮)** arriba a la derecha.
+        2. Selecciona **'Instalar aplicación'** o 'Agregar a inicio'.
+
+        **Para iPhone (Safari):**
+        1. Toca el botón **'Compartir'** (el cuadrado con la flecha hacia arriba).
+        2. Busca y elige **'Agregar al inicio'**.
+        """)
+    st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
 if st.session_state.pantalla in ["free", "pro"]:
