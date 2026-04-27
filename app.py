@@ -689,37 +689,7 @@ with c3:
             st.session_state.pantalla = "login_directo"
             st.rerun()
 
-st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="width:7px;height:7px;border-radius:50%;background:{C_ACCENT2};display:inline-block"></span>UF hoy: {clp(valor_uf)}</div></div>', unsafe_allow_html=True)
-
 st.divider()
-
-# --- FILA DE INFORMACIÓN (UF a la izquierda, APP a la derecha) ---
-c_izq, c_der = st.columns([3, 1]) 
-
-with c_izq:
-    st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
-
-with c_der:
-    # Quitamos los tamaños fijos para que copie las medidas de 'Ingresar'
-    st.markdown(f"""
-        <style>
-        div[data-testid="stColumn"]:nth-of-type(2) button {{
-            background-color: transparent !important;
-            border: 1px solid rgba(28, 163, 158, 0.4) !important;
-            border-radius: 20px !important;
-            color: #1CA39E !important;
-            transition: all 0.3s ease !important;
-        }}
-        div[data-testid="stColumn"]:nth-of-type(2) button:hover {{
-            border-color: #1CA39E !important;
-            background-color: rgba(28, 163, 158, 0.1) !important;
-        }}
-        </style>
-    """, unsafe_allow_html=True)
-    
-    # Este True es el que fuerza a que toque la pared derecha
-    if st.button("📲 Instalar App", use_container_width=True):
-        modal_instalacion()
 
 # --- 1. FUNCIÓN DE LA VENTANA ---
 @st.dialog("📲 Instalar PGH App")
@@ -737,7 +707,7 @@ def modal_instalacion():
     </div>
     """, unsafe_allow_html=True)
 
-# --- 2. FILA DE INFORMACIÓN (UF + BOTÓN APP) ---
+# --- 2. FILA DE INFORMACIÓN (UF a la izquierda, APP a la derecha) ---
 c_izq, c_der = st.columns([3, 1]) 
 
 with c_izq:
@@ -762,6 +732,8 @@ with c_der:
     
     if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
+
+st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
 if st.session_state.pantalla in ["free", "pro"]:
