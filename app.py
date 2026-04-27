@@ -705,18 +705,17 @@ def modal_instalacion():
     </div>
     """, unsafe_allow_html=True)
 
-# --- 2. FILA DE INFORMACIÓN (Acercada hacia arriba) ---
+# --- 2. FILA DE INFORMACIÓN (Ajustada para Celular) ---
 c_izq, c_der = st.columns([3, 1]) 
 
 with c_izq:
-    # Agregamos margin-top negativo a la UF para que suba
-    st.markdown(f'<div class="uf-pill" style="margin-top: -15px;"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
+    # Le quitamos el margin-top negativo para que no choque en el celular
+    st.markdown(f'<div class="uf-pill"><span class="uf-dot"></span>UF hoy: ${valor_uf:,.0f}</div>', unsafe_allow_html=True)
 
 with c_der:
     st.markdown(f"""
         <style>
         div[data-testid="stColumn"]:nth-of-type(2) button {{
-            margin-top: -15px !important; /* Esto "tira" el botón hacia arriba */
             background-color: transparent !important;
             border: 1px solid rgba(28, 163, 158, 0.4) !important;
             border-radius: 20px !important;
@@ -727,13 +726,19 @@ with c_der:
             border-color: #1CA39E !important;
             background-color: rgba(28, 163, 158, 0.1) !important;
         }}
+        /* Esto ayuda a que en el celular haya un espacio sutil entre ambos */
+        @media (max-width: 600px) {{
+            div[data-testid="stColumn"]:nth-of-type(2) {{
+                margin-top: 10px; 
+            }}
+        }}
         </style>
     """, unsafe_allow_html=True)
     
     if st.button("📲 Instalar App", use_container_width=True):
         modal_instalacion()
 
-st.divider() # Este divisor sí lo dejamos para separar la cabecera de la calculadora
+st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
 if st.session_state.pantalla in ["free", "pro"]:
