@@ -693,19 +693,37 @@ st.markdown(f'<div style="margin-bottom:8px"><div class="uf-pill"><span style="w
 
 st.divider()
 
-# --- PASO 3: GUÍA DE INSTALACIÓN ---
+# --- PASO 3: GUÍA DE INSTALACIÓN (VERSIÓN LIMPIA) ---
 with st.sidebar:
-    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_ACCENT2}; font-size:1.2rem; margin-bottom:10px;">PGH App 📱</div>', unsafe_allow_html=True)
-    with st.expander("¿Cómo instalar en mi celular?"):
-        st.markdown("""
-        **Para Android (Chrome):**
-        1. Toca los **tres puntos (⋮)** arriba a la derecha.
-        2. Selecciona **'Instalar aplicación'** o 'Agregar a inicio'.
+    st.markdown(f"""
+    <style>
+        /* Bajamos el contenido para que no choque con los botones de Streamlit */
+        [data-testid="stSidebarContent"] {{
+            padding-top: 4rem !important;
+        }}
+        /* Ponemos la barra lateral del mismo color oscuro que tu app */
+        [data-testid="stSidebar"] {{
+            background-color: {C_BG} !important;
+            border-right: 1px solid rgba(28,163,158,0.1);
+        }}
+        /* Estilo para el botón de instalar */
+        [data-testid="stExpander"] {{
+            border: 1px solid rgba(28,163,158,0.2) !important;
+            border-radius: 12px !important;
+            background: rgba(255,255,255,0.03) !important;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
 
-        **Para iPhone (Safari):**
-        1. Toca el botón **'Compartir'** (el cuadrado con la flecha hacia arriba).
-        2. Busca y elige **'Agregar al inicio'**.
-        """)
+    st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_ACCENT2}; font-size:1.1rem; margin-top:10px;">PGH App 📱</div>', unsafe_allow_html=True)
+    
+    with st.expander("Instalar App"): 
+        st.markdown(f"""
+        <div style="font-size: 0.85rem; color: {C_MUTED}; line-height: 1.4;">
+        <b>Android:</b> Tres puntos (⋮) → Instalar.<br><br>
+        <b>iPhone:</b> Compartir → Agregar al inicio.
+        </div>
+        """, unsafe_allow_html=True)
     st.divider()
 
 # ── INPUTS CALCULADORA (Free y Pro) ──────────────────────────────────────────
