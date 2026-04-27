@@ -454,15 +454,19 @@ footer {{ visibility: hidden; }}
 </style>
 """, unsafe_allow_html=True)
 
-# --- CONFIGURACIÓN PWA (IDENTIDAD DE APP) ---
+# --- CONFIGURACIÓN PWA (COMPATIBILIDAD TOTAL) ---
 st.markdown(f"""
-        <head>
-            <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
-            <meta name="theme-color" content="#1CA39E">
-            <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg">
-            <meta name="mobile-web-app-capable" content="yes">
-            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        </head>
+    <head>
+        <link rel="manifest" href="https://raw.githubusercontent.com/chekelito/pgh/main/manifest.json">
+        <meta name="theme-color" content="#1CA39E">
+        <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/chekelito/pgh/main/logo_pgh.jpg">
+        
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="PGH">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        
+        <meta name="mobile-web-app-capable" content="yes">
+    </head>
 """, unsafe_allow_html=True)
 
 @st.cache_data(ttl=3600)
@@ -698,15 +702,17 @@ st.divider()
 def modal_instalacion():
     st.markdown(f"""
     <div style="font-size: 0.95rem; color: {C_TEXT}; line-height: 1.6;">
-        <p>Para llevar <b>PGH</b> en tu pantalla de inicio como una aplicación real, sigue estos pasos según tu equipo:</p>
+        <p>Para usar <b>PGH</b> como una aplicación en tu pantalla de inicio, sigue estos pasos según tu equipo:</p>
         <hr style="border-color: rgba(28,163,158,0.2)">
-        <p><b>En Android (Chrome) 🤖:</b><br>
-        1. Toca los tres puntos (⋮) en la esquina superior.<br>
-        2. Selecciona <b>'Instalar aplicación'</b> o 'Agregar a la pantalla de inicio'.</p>
         
         <p><b>En iPhone (Safari) 🍎:</b><br>
-        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha hacia arriba).<br>
-        2. Desliza hacia abajo y elige <b>'Agregar al inicio'</b>.</p>
+        1. Toca el botón <b>Compartir</b> (el cuadrado con la flecha hacia arriba <span style='font-size:1.2rem;'>↑</span> en la barra de abajo).<br>
+        2. Baja en el menú y selecciona <b>'Agregar a la pantalla de inicio'</b>.<br>
+        3. Toca <b>'Agregar'</b> arriba a la derecha.</p>
+        
+        <p><b>En Android (Chrome) 🤖:</b><br>
+        1. Toca los tres puntos (⋮) arriba a la derecha.<br>
+        2. Selecciona <b>'Instalar aplicación'</b> o 'Agregar a inicio'.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -721,7 +727,6 @@ with st.sidebar:
     
     st.markdown(f'<div style="font-family:Syne,sans-serif; font-weight:800; color:{C_TEXT}; font-size:1.1rem; margin-top:10px;">PGH App 📱</div>', unsafe_allow_html=True)
     
-    # El botón que activa la ventana central
     if st.button("Configurar como App 🚀", use_container_width=True):
         modal_instalacion()
     
