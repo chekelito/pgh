@@ -1083,6 +1083,9 @@ elif st.session_state.pantalla == "pro":
     # 1. Traer datos
     todas_las_boletas = obtener_boletas(st.session_state.usuario_email)
     
+    # Inicializamos la variable para evitar el NameError
+    boletas = []
+    
     if todas_las_boletas:
         df_full = pd.DataFrame(todas_las_boletas)
         df_full["fecha"] = pd.to_datetime(df_full["fecha"])
@@ -1097,14 +1100,12 @@ elif st.session_state.pantalla == "pro":
                 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
                 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
             }
-            # Calculamos el mes actual (1 a 12) y le restamos 1 porque las listas empiezan a contar desde 0
             mes_actual = date.today().month
             mes_sel = st.selectbox("🗓️ Mes", options=list(meses_nombres.values()), index=mes_actual - 1)
-            # Convertir nombre de mes a número
             mes_num = [k for k, v in meses_nombres.items() if v == mes_sel][0]
 
         # 3. Filtrar el DataFrame
-        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.month == mes_num)] # Se sobreescribe 'df' para que el resto de tu código funcione igual
+        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.month == mes_num)] 
         
         # Filtrado final para la tabla
         boletas = df.to_dict('records') 
@@ -1112,42 +1113,45 @@ elif st.session_state.pantalla == "pro":
         if not boletas:
             st.info(f"No hay boletas registradas para {mes_sel} de {anio_sel}.")
         
-        # --- A partir de aquí sigue tu código original de la tabla (<tr>...) ---
     if boletas:
-        df = pd.DataFrame(boletas)
-
-          # Tabla mobile-friendly: solo columnas esenciales
+        # La variable df ya existe gracias al filtro anterior
+        
+        # Tabla mobile-friendly: solo columnas esenciales
         filas = ""
         for _, row in df.iterrows():
-          bal = row["balance_renta"]
-          color = "#00C853" if bal >= 0 else "#FF4B4B"
-          icono = "🟢" if bal >= 0 else "🔴"
-          # Formateamos la fecha para que solo muestre Día/Mes/Año
-          fecha_limpia = row['fecha'].strftime("%d/%m/%Y") 
-          
-          filas += f"""<tr>
-              <td>{fecha_limpia}</td>
-              <td>{clp(row['liquido'])}</td>
-              <td>{clp(row['bruto'])}</td>
-              <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
-          </tr>"""
+            bal = row["balance_renta"]
+            color = "#00C853" if bal >= 0 else "#FF4B4B"
+            
+            # ¡AQUÍ ESTÁ LA CORRECCIÓN! (El 0 en lugar de la O mayúscula)
+            icono = "🟢" if bal >= 0 else "🔴"
+            
+            # Formateamos la fecha para que solo muestre Día/Mes/Año
+            fecha_limpia = row['fecha'].strftime("%d/%m/%Y") 
+            
+            filas += f"""<tr>
+                <td>{fecha_limpia}</td>
+                <td>{clp(row['liquido'])}</td>
+                <td>{clp(row['bruto'])}</td>
+                <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
+            </tr>"""
+            
         st.markdown(f"""
-    <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
-    <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
-        <thead>
-            <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
-                <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
-                <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
-                <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
-                <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
-            </tr>
-        </thead>
-        <tbody style="color:#FFFFFF">
-            {filas}
-        </tbody>
-    </table>
-    </div>
-    """, unsafe_allow_html=True)
+        <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
+        <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
+            <thead>
+                <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
+                    <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
+                    <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
+                </tr>
+            </thead>
+            <tbody style="color:#FFFFFF">
+                {filas}
+            </tbody>
+        </table>
+        </div>
+        """, unsafe_allow_html=True)
 
         # Botón reporte anual
         st.markdown("<br>", unsafe_allow_html=True)
@@ -1180,6 +1184,7 @@ elif st.session_state.pantalla == "pro":
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True,
             )
+            
         # --- NUEVA SECCIÓN DE ELIMINAR (DIÁLOGO MODAL) ---
         st.markdown("<br>", unsafe_allow_html=True)
         
@@ -1205,7 +1210,6 @@ elif st.session_state.pantalla == "pro":
 
         if st.button("⚙️ Opciones de historial (Eliminar boletas)", use_container_width=True):
             modal_eliminar()
-        # ----------------------------------------------------
 
         st.divider()
 
