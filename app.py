@@ -1080,14 +1080,14 @@ elif st.session_state.pantalla == "pro":
     # Historial
     st.markdown('<span class="section-tag">Historial de Boletas</span>', unsafe_allow_html=True)
     
-    # 1. Traer y validar datos
+    # 1. Traer datos
     todas_las_boletas = obtener_boletas(st.session_state.usuario_email)
     
     if todas_las_boletas:
         df_full = pd.DataFrame(todas_las_boletas)
         df_full["fecha"] = pd.to_datetime(df_full["fecha"])
         
-        # 2. Selectores de filtro
+        # 2. Crear los selectores de filtro
         c1, c2 = st.columns(2)
         with c1:
             anios = sorted(df_full["fecha"].dt.year.unique(), reverse=True)
@@ -1097,145 +1097,192 @@ elif st.session_state.pantalla == "pro":
                 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio",
                 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
             }
+            # Calculamos el mes actual (1 a 12) y le restamos 1 porque las listas empiezan a contar desde 0
             mes_actual = date.today().month
             mes_sel = st.selectbox("🗓️ Mes", options=list(meses_nombres.values()), index=mes_actual - 1)
+            # Convertir nombre de mes a número
             mes_num = [k for k, v in meses_nombres.items() if v == mes_sel][0]
 
         # 3. Filtrar el DataFrame
-        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.month == mes_num)]
+        df = df_full[(df_full["fecha"].dt.year == anio_sel) & (df_full["fecha"].dt.month == mes_num)] # Se sobreescribe 'df' para que el resto de tu código funcione igual
+        
+        # Filtrado final para la tabla
         boletas = df.to_dict('records') 
         
         if not boletas:
             st.info(f"No hay boletas registradas para {mes_sel} de {anio_sel}.")
-        else:
-            # --- TABLA HTML ---
-            filas = ""
-            for _, row in df.iterrows():
-                bal = row["balance_renta"]
-                color = "#00C853" if bal >= 0 else "#FF4B4B"
-                icono = "🟢" if bal >= 0 else "🔴"
-                fecha_limpia = row['fecha'].strftime("%d/%m/%Y") 
-                
-                filas += f"""<tr>
-                    <td>{fecha_limpia}</td>
-                    <td>{clp(row['liquido'])}</td>
-                    <td>{clp(row['bruto'])}</td>
-                    <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
-                </tr>"""
-                
-            st.markdown(f"""
-            <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
-            <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
-                <thead>
-                    <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
-                        <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
-                        <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
-                        <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
-                        <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
-                    </tr>
-                </thead>
-                <tbody style="color:#FFFFFF">{filas}</tbody>
-            </table>
-            </div>
-            """, unsafe_allow_html=True)
+        
+        # --- A partir de aquí sigue tu código original de la tabla (<tr>...) ---
+    if boletas:
+        df = pd.DataFrame(boletas)
 
-            # --- BOTONES DE DESCARGA Y ELIMINAR ---
-            st.markdown("<br>", unsafe_allow_html=True)
-            c_anual_pdf, c_anual_xls = st.columns(2)
-            
-            with c_anual_pdf:
-                st.download_button(
-                    label="📑 Reporte Anual PDF",
-                    data=pdf_reporte(boletas, st.session_state.usuario_nombre),
-                    file_name=f"PGH_Reporte_{date.today().year}.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                )
-                
-            with c_anual_xls:
-                df_anual = pd.DataFrame(boletas)
-                columnas_a_quitar = ['id', 'usuario_email', 'created_at']
-                for col in columnas_a_quitar:
-                    if col in df_anual.columns:
-                        df_anual = df_anual.drop(columns=[col])
-                st.download_button(
-                    label="📈 Reporte Anual Excel",
-                    data=conversion_excel(df_anual),
-                    file_name=f"PGH_Reporte_{date.today().year}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    use_container_width=True,
-                )
+          # Tabla mobile-friendly: solo columnas esenciales
+        filas = ""
+        for _, row in df.iterrows():
+          bal = row["balance_renta"]
+          color = "#00C853" if bal >= 0 else "#FF4B4B"
+          icono = "🟢" if bal >= 0 else "🔴"
+          # Formateamos la fecha para que solo muestre Día/Mes/Año
+          fecha_limpia = row['fecha'].strftime("%d/%m/%Y") 
+          
+          filas += f"""<tr>
+              <td>{fecha_limpia}</td>
+              <td>{clp(row['liquido'])}</td>
+              <td>{clp(row['bruto'])}</td>
+              <td style="color:{color};font-weight:600">{icono} {clp(bal)}</td>
+          </tr>"""
+        st.markdown(f"""
+    <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(28,163,158,0.2)">
+    <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:0.88rem">
+        <thead>
+            <tr style="background:rgba(35,20,91,0.8);color:#9BA8B5;font-size:0.72rem;text-transform:uppercase;letter-spacing:1px">
+                <th style="padding:12px 16px;text-align:left;font-weight:600">Fecha</th>
+                <th style="padding:12px 16px;text-align:right;font-weight:600">Líquido</th>
+                <th style="padding:12px 16px;text-align:right;font-weight:600">Bruto</th>
+                <th style="padding:12px 16px;text-align:right;font-weight:600">Balance</th>
+            </tr>
+        </thead>
+        <tbody style="color:#FFFFFF">
+            {filas}
+        </tbody>
+    </table>
+    </div>
+    """, unsafe_allow_html=True)
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            
-            @st.dialog("🗑️ Eliminar una boleta")
-            def modal_eliminar():
-                st.markdown("<p style='font-size:0.95rem; color:#9BA8B5;'>Selecciona la boleta que deseas eliminar permanentemente:</p>", unsafe_allow_html=True)
-                opciones_borrar = {f"{b['fecha'].strftime('%d/%m/%Y')} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
-                
-                boleta_sel = st.selectbox("Boletas guardadas", options=list(opciones_borrar.keys()), label_visibility="collapsed")
-                st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("Confirmar Eliminación", type="primary", use_container_width=True):
-                    id_a_borrar = opciones_borrar[boleta_sel]
-                    if eliminar_boleta(id_a_borrar):
-                        st.success("✅ Boleta eliminada correctamente.")
-                        st.rerun()
-                    else:
-                        st.error("❌ Error al intentar eliminar.")
-
-            if st.button("⚙️ Opciones de historial (Eliminar boletas)", use_container_width=True):
-                modal_eliminar()
-
-            st.divider()
-
-            # --- GRÁFICOS ---
-            st.markdown('<span class="section-tag">Gráficos</span>', unsafe_allow_html=True)
-
-            # Gráfico 1
-            df_mes = df.copy()
-            df_mes["mes_orden"] = df_mes["fecha"].dt.to_period("M")
-            df_mes = df_mes.groupby("mes_orden")["bruto"].sum().reset_index()
-            df_mes["mes_label"] = df_mes["mes_orden"].dt.strftime("%b %Y")
-            df_mes = df_mes.sort_values("mes_orden")
-
-            fig1 = go.Figure(go.Bar(
-                x=df_mes["mes_label"], y=df_mes["bruto"], marker_color=C_ACCENT2,
-                text=[clp(v) for v in df_mes["bruto"]], textposition="outside",
-                textfont=dict(color=C_TEXT, size=12, family="DM Sans")
-            ))
-            fig1.update_layout(
-                title=dict(text="Ingresos brutos por mes", font=dict(color=C_TEXT, size=15, family="Syne")),
-                paper_bgcolor="rgba(35,20,91,0.45)", plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color=C_MUTED, family="DM Sans", size=12),
-                xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=12)),
-                yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11), tickprefix="$", rangemode="nonnegative"),
-                margin=dict(t=50, b=50, l=70, r=20), height=340, bargap=0.3, dragmode="pan"
+        # Botón reporte anual
+        st.markdown("<br>", unsafe_allow_html=True)
+        # --- REPORTES ANUALES (PDF + EXCEL) ---
+        c_anual_pdf, c_anual_xls = st.columns(2)
+        
+        with c_anual_pdf:
+            st.download_button(
+                label="📑 Reporte Anual PDF",
+                data=pdf_reporte(boletas, st.session_state.usuario_nombre),
+                file_name=f"PGH_Reporte_{date.today().year}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
             )
-            st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
-
-            # Gráfico 2
-            ds = df.sort_values("fecha").copy()
-            ds["balance_acumulado"] = ds["balance_renta"].cumsum()
-            ds["fecha_str"] = ds["fecha"].dt.strftime("%d/%b")
-            colores_bal = ["#00C853" if v >= 0 else "#FF4B4B" for v in ds["balance_acumulado"]]
-
-            fig2 = go.Figure(go.Bar(
-                x=ds["fecha_str"], y=ds["balance_acumulado"], marker_color=colores_bal,
-                text=[clp(v) for v in ds["balance_acumulado"]], textposition="outside",
-                textfont=dict(color=C_TEXT, size=11)
-            ))
-            fig2.update_layout(
-                title=dict(text="Mi saldo acumulado", font=dict(color=C_TEXT, size=15, family="Syne")),
-                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(color=C_MUTED, family="DM Sans"),
-                xaxis=dict(showgrid=False, tickfont=dict(color=C_TEXT)),
-                yaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickprefix="$", tickfont=dict(color=C_MUTED)),
-                margin=dict(t=50, b=40, l=60, r=20), height=320, showlegend=False, dragmode=False
+            
+        with c_anual_xls:
+            # Convertimos la lista de boletas filtradas a un DataFrame
+            df_anual = pd.DataFrame(boletas)
+            
+            # Limpieza: quitamos columnas técnicas de la base de datos que al usuario no le sirven
+            columnas_a_quitar = ['id', 'usuario_email', 'created_at']
+            for col in columnas_a_quitar:
+                if col in df_anual.columns:
+                    df_anual = df_anual.drop(columns=[col])
+            
+            st.download_button(
+                label="📈 Reporte Anual Excel",
+                data=conversion_excel(df_anual),
+                file_name=f"PGH_Reporte_{date.today().year}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
             )
-            fig2.add_hline(y=0, line_width=2, line_color="white", opacity=0.3)
-            st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
+        # --- NUEVA SECCIÓN DE ELIMINAR (DIÁLOGO MODAL) ---
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        @st.dialog("🗑️ Eliminar una boleta")
+        def modal_eliminar():
+            st.markdown("<p style='font-size:0.95rem; color:#9BA8B5;'>Selecciona la boleta que deseas eliminar permanentemente de tu historial:</p>", unsafe_allow_html=True)
+            opciones_borrar = {f"{b['fecha']} - Líquido: {clp(b['liquido'])}": b['id'] for b in boletas}
+            
+            boleta_sel = st.selectbox(
+                "Boletas guardadas",
+                options=list(opciones_borrar.keys()),
+                label_visibility="collapsed"
+            )
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("Confirmar Eliminación", type="primary", use_container_width=True):
+                id_a_borrar = opciones_borrar[boleta_sel]
+                if eliminar_boleta(id_a_borrar):
+                    st.success("✅ Boleta eliminada correctamente.")
+                    st.rerun()
+                else:
+                    st.error("❌ Error al intentar eliminar.")
 
-    else:
+        if st.button("⚙️ Opciones de historial (Eliminar boletas)", use_container_width=True):
+            modal_eliminar()
+        # ----------------------------------------------------
+
+        st.divider()
+
+        # Gráficos
+        st.markdown('<span class="section-tag">Gráficos</span>', unsafe_allow_html=True)
+
+        df["fecha"] = pd.to_datetime(df["fecha"])
+
+        # Gráfico 1: Barras por mes
+        df_mes = df.copy()
+        df_mes["mes_orden"] = df_mes["fecha"].dt.to_period("M")
+        df_mes = df_mes.groupby("mes_orden")["bruto"].sum().reset_index()
+        df_mes["mes_label"] = df_mes["mes_orden"].dt.strftime("%b %Y")
+        df_mes = df_mes.sort_values("mes_orden")
+
+        fig1 = go.Figure()
+        fig1.add_trace(go.Bar(
+            x=df_mes["mes_label"],
+            y=df_mes["bruto"],
+            marker_color=C_ACCENT2,
+            marker_line_width=0,
+            text=[clp(v) for v in df_mes["bruto"]],
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=12, family="DM Sans"),
+        ))
+        fig1.update_layout(
+            title=dict(text="Ingresos brutos por mes", font=dict(color=C_TEXT, size=15, family="Syne"), x=0),
+            paper_bgcolor="rgba(35,20,91,0.45)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(color=C_MUTED, family="DM Sans", size=12),
+            xaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickfont=dict(color=C_TEXT, size=12), title="", fixedrange=False),
+            yaxis=dict(gridcolor="rgba(28,163,158,0.12)", tickfont=dict(color=C_MUTED, size=11),
+                       tickprefix="$", tickformat=",.0f", title="", rangemode="nonnegative", fixedrange=False),
+            margin=dict(t=50, b=50, l=70, r=20),
+            height=340,
+            bargap=0.3,
+            dragmode="pan"
+        )
+        st.plotly_chart(fig1, use_container_width=True, config={"displayModeBar": False})
+
+        # Gráfico 2: Balance Acumulado (Estilo Semáforo - Muy fácil de entender)
+        ds = df.sort_values("fecha").copy()
+        ds["balance_acumulado"] = ds["balance_renta"].cumsum()
+        ds["fecha_str"] = ds["fecha"].dt.strftime("%d/%b")
+        
+        # Asignamos colores: Verde si es positivo, Rojo si es negativo
+        colores_bal = ["#00C853" if v >= 0 else "#FF4B4B" for v in ds["balance_acumulado"]]
+
+        fig2 = go.Figure()
+        fig2.add_trace(go.Bar(
+            x=ds["fecha_str"],
+            y=ds["balance_acumulado"],
+            marker_color=colores_bal,
+            text=[clp(v) for v in ds["balance_acumulado"]],
+            textposition="outside",
+            textfont=dict(color=C_TEXT, size=11),
+        ))
+
+        fig2.update_layout(
+            title=dict(text="Mi saldo acumulado para Abril", font=dict(color=C_TEXT, size=15, family="Syne")),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(color=C_MUTED, family="DM Sans"),
+            xaxis=dict(showgrid=False, tickfont=dict(color=C_TEXT)),
+            yaxis=dict(gridcolor="rgba(28,163,158,0.1)", tickprefix="$", tickfont=dict(color=C_MUTED)),
+            margin=dict(t=50, b=40, l=60, r=20),
+            height=320,
+            showlegend=False,
+            dragmode=False
+        )
+        # Añadimos línea de equilibrio
+        fig2.add_hline(y=0, line_width=2, line_color="white", opacity=0.3)
+        
+        st.plotly_chart(fig2, use_container_width=True, config={"displayModeBar": False})
+
+    elif not todas_las_boletas:
+        # Solo mostramos esto si la base de datos completa está vacía, para no duplicar el mensaje del mes.
         st.info("Aún no tienes boletas guardadas. Calcula y guarda tu primera boleta arriba. 👆")
     
     # ── PANEL DE ADMINISTRACIÓN (Versión Diálogo Pro) ──
